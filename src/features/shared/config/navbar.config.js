@@ -1,3 +1,6 @@
+import logoNarajita from "@/assets/images/marcapaisnarajita.png";
+import logoMarcapais2 from "@/assets/images/marcapais2.png";
+
 /**
  * Navbar UI content configuration.
  * Centralizes all hardcoded strings from the navigation component.
@@ -7,14 +10,14 @@ export const NAVBAR_CONFIG = {
   navAriaLabel: "Navegación principal",
   logo: {
     useImage: true,
-    src: "/marcapaisnarajita.png",
+    src: logoNarajita,
     alt: "Marca País Logo",
     width: 500,
     height: 500,
   },
   logo2: {
     useImage: true,
-    src: "/marcapais2.png",
+    src: logoMarcapais2,
     alt: "Marca País Logo Scrolled",
     width: 500,
     height: 500,
