@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🇦🇷 Marca País - Sistema Biométrico & TAG (2026)
 
-## Getting Started
+Este proyecto es una aplicación web de alto rendimiento construida con las últimas tecnologías de 2026 para el Sistema Biométrico y TAG.
 
-First, run the development server:
+## 🛠️ Stack Tecnológico
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Framework:** [Next.js 16.2](https://nextjs.org/) (App Router)
+- **Runtime:** [React 19](https://react.dev/)
+- **Estilos:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **ORM:** [Prisma 7.5](https://www.prisma.io/)
+- **Base de Datos:** PostgreSQL
+- **Componentes:** Shadcn UI + Lucide React
+- **Validación:** Zod + React Hook Form
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Comandos Disponibles
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+A continuación se detallan los comandos disponibles en el proyecto mediante `npm run`:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🔧 Inicialización
+- **`app:start`**: **El comando recomendado para el primer inicio.** Realiza el `npm install`, ejecuta las migraciones de base de datos (`prisma migrate`), genera el cliente de Prisma y procesa todos los iconos/logos SVG a componentes React.
 
-## Learn More
+### 💻 Desarrollo
+- **`dev`**: Inicia el servidor de desarrollo en [http://localhost:3001](http://localhost:3001).
+- **`build`**: Compila la aplicación para producción.
+- **`start`**: Inicia el servidor de producción (requiere haber ejecutado `build` previamente).
+- **`lint`**: Ejecuta el linter para verificar la calidad del código.
 
-To learn more about Next.js, take a look at the following resources:
+### 🗄️ Base de Datos (Prisma)
+- **`db:migrate`**: Crea y aplica migraciones a la base de datos en entorno de desarrollo.
+- **`db:generate`**: Genera el cliente de Prisma basado en el esquema actual.
+- **`db:push`**: Sincroniza el esquema de Prisma directamente con la base de datos (sin generar archivos de migración).
+- **`db:studio`**: Abre la interfaz gráfica de Prisma para explorar y editar los datos.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🎨 Assets (Iconos y Logos)
+- **`icons:all`**: Procesa todos los archivos SVG de las carpetas de origen y los convierte en componentes React optimizados.
+- **`icons:build`**: Procesa solo los iconos.
+- **`logos:build`**: Procesa solo los logos.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📐 Estructura del Proyecto
 
-## Deploy on Vercel
+El proyecto sigue una arquitectura **Modular por Features**:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `src/app/`: Rutas y layouts principales.
+- `src/features/`: Lógica de dominio organizada por funcionalidades (auth, biometric, etc.).
+- `src/components/ui/`: Componentes base (átomos) de Shadcn UI.
+- `src/components/shared/`: Componentes e infraestructura compartida.
+- `src/services/`: Lógica de negocio y consultas a base de datos (Prisma).
+- `src/actions/`: Server Actions para mutaciones y lógica de orquestación.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛡️ Reglas de Desarrollo
+
+- Máximo **250 líneas** por archivo.
+- Uso de **Server Components (RSC)** por defecto.
+- Configuración de temas vía `@theme` en CSS (Tailwind v4).
+- Las fechas deben formatearse en el servidor para evitar errores de hidratación.

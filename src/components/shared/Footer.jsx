@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FOOTER_CONFIG } from "@/features/shared/config/footer.config";
+import { BrandIcon } from "./BrandIcon";
 
 /**
  * Site footer — Matches the 'Duna' minimal aesthetic with specific Marca País content.
@@ -15,9 +16,14 @@ export function Footer() {
 
         {/* Left Section: Brand & Text */}
         <div className="flex flex-col gap-6 max-w-xl">
-          {/* Logo representation with Image only */}
+          {/* Logo representation with Component or Image */}
           <div className="flex flex-col gap-4 mb-2 items-start">
-            {brand.logoImage && (
+            {brand.useLogoComponent ? (
+              <BrandIcon 
+                icon={brand.logoComponent} 
+                className="h-16 w-auto text-primary" 
+              />
+            ) : brand.logoImage ? (
               <Image 
                 src={brand.logoImage} 
                 alt={brand.logoText} 
@@ -25,7 +31,7 @@ export function Footer() {
                 height={50} 
                 className="h-12 w-auto object-contain object-left opacity-90"
               />
-            )}
+            ) : null}
           </div>
 
           {/* Main Title with mixed colors */}

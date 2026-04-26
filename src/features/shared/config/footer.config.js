@@ -1,5 +1,5 @@
 import { MessageSquareHeart } from "lucide-react";
-import logoNarajita from "@/assets/images/marcapaisnarajita.png";
+import { Logomarca } from "@/assets/icons/logos";
 
 /**
  * Footer UI configuration.
@@ -7,7 +7,9 @@ import logoNarajita from "@/assets/images/marcapaisnarajita.png";
  */
 export const FOOTER_CONFIG = {
   brand: {
-    logoImage: logoNarajita,
+    useLogoComponent: true,
+    logoComponent: Logomarca,
+    logoImage: null,
     logoText: "Venezuela",
     logoSubtext: "abierta al futuro",
     title: [

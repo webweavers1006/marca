@@ -1,0 +1,18 @@
+{
+  "icon": true,
+  "expandProps": "end",
+  "prettier": true,
+  "svgo": true,
+  "svgoConfig": {
+    "plugins": [
+      {
+        "name": "convertColors",
+        "params": {
+          "currentColor": true
+        }
+      }
+    ]
+  },
+  "jsxRuntime": "automatic",
+  "ext": "jsx"
+}

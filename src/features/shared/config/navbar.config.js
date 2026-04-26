@@ -1,4 +1,4 @@
-import logoNarajita from "@/assets/images/marcapaisnarajita.png";
+import { Logomarcalarge } from "@/assets/icons/logos";
 import logoMarcapais2 from "@/assets/images/marcapais2.png";
 
 /**
@@ -9,8 +9,8 @@ export const NAVBAR_CONFIG = {
   logoAriaLabel: "Inicio - Marca País Venezuela",
   navAriaLabel: "Navegación principal",
   logo: {
-    useImage: true,
-    src: logoNarajita,
+    useImage: false,
+    component: Logomarcalarge,
     alt: "Marca País Logo",
     width: 500,
     height: 500,

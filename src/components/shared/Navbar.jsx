@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { MobileMenu } from "./MobileMenu";
 import { useScrollThreshold } from "@/features/shared/hooks/use-scroll-threshold";
+import { BrandIcon } from "./BrandIcon";
 
 /**
  * Premium Navigation Bar using native CSS sticky positioning and Shadcn UI.
@@ -57,6 +58,14 @@ export function Navbar() {
               height={NAVBAR_CONFIG.logo.height}
               className="object-contain w-[150px] h-[100px]"
               priority
+            />
+          ) : NAVBAR_CONFIG.logo?.component ? (
+            <BrandIcon
+              icon={NAVBAR_CONFIG.logo.component}
+              className={cn(
+                "object-contain w-[150px] h-[100px] transition-colors duration-500",
+                isScrolled ? "text-primary" : "text-foreground-inverse"
+              )}
             />
           ) : (
             <>
