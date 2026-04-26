@@ -3,6 +3,7 @@ import { Toaster } from "sonner";
 import { Navbar } from "@/components/shared/Navbar";
 import { Footer } from "@/components/shared/Footer";
 import { SITE_CONFIG } from "@/features/shared/config/site.config";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
 
 const inter = Inter({
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
     <html lang="es" className={inter.variable}>
       <body>
         <Navbar />
+        <SpeedInsights />
         <main id="main-content" role="main">
           {children}
         </main>
