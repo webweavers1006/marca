@@ -86,10 +86,9 @@ export function Navbar() {
                           <Link
                             href={link.href}
                             onClick={() => {
-                              // Manually update hash state if it's an anchor link
-                              if (link.href.includes("#")) {
-                                setCurrentHash(`#${link.href.split("#")[1]}`);
-                              }
+                              // Manually update hash state to ensure immediate UI feedback
+                              const hash = link.href.includes("#") ? `#${link.href.split("#")[1]}` : "";
+                              setCurrentHash(hash);
                             }}
                             className={cn(
                               navigationMenuTriggerStyle(),

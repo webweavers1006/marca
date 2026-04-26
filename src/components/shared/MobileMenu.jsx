@@ -39,9 +39,8 @@ export function MobileMenu({ isOpen, onClose }) {
                   <Link
                     href={link.href}
                     onClick={() => {
-                      if (link.href.includes("#")) {
-                        setCurrentHash(`#${link.href.split("#")[1]}`);
-                      }
+                      const hash = link.href.includes("#") ? `#${link.href.split("#")[1]}` : "";
+                      setCurrentHash(hash);
                       onClose();
                     }}
                     className={cn(

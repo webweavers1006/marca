@@ -12,24 +12,23 @@ export function useActiveLink() {
   const [currentHash, setCurrentHash] = useState("");
 
   useEffect(() => {
-    // Safety check for SSR environments
     if (typeof window === "undefined") return;
 
-    const handleHashChange = () => {
-      setCurrentHash(window.location.hash);
+    const handleSync = () => {
+      setCurrentHash(window.location.hash || "");
     };
     
-    // Initial sync
-    handleHashChange();
+    // Sync on mount and whenever the path changes (handles returning to "/" from a hash)
+    handleSync();
     
-    window.addEventListener("hashchange", handleHashChange);
-    window.addEventListener("popstate", handleHashChange);
+    window.addEventListener("hashchange", handleSync);
+    window.addEventListener("popstate", handleSync);
     
     return () => {
-      window.removeEventListener("hashchange", handleHashChange);
-      window.removeEventListener("popstate", handleHashChange);
+      window.removeEventListener("hashchange", handleSync);
+      window.removeEventListener("popstate", handleSync);
     };
-  }, []);
+  }, [pathname]); // Re-sync if the path changes
 
   /**
    * Checks if a specific href is currently active.
