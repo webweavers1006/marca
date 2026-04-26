@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect, Fragment } from "react";
+import { useActiveLink } from "@/features/shared/hooks/use-active-link";
+import { useState, Fragment } from "react";
 import { Menu, X, Globe } from "lucide-react";
 import { MAIN_NAV_LINKS } from "@/features/shared/config/routes.config";
 import { SITE_CONFIG } from "@/features/shared/config/site.config";
@@ -28,6 +29,7 @@ import { useScrollThreshold } from "@/features/shared/hooks/use-scroll-threshold
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isScrolled = useScrollThreshold("viewport", 80);
+  const { isLinkActive, setCurrentHash } = useActiveLink();
 
   return (
     <header
@@ -71,29 +73,41 @@ export function Navbar() {
         {/* Center: Main Links (Desktop) - Using Shadcn NavigationMenu */}
         <div className="hidden nav:block">
           <NavigationMenu>
-            <NavigationMenuList className="bg-foreground-inverse/70 p-2 rounded-full gap-4">
-              {MAIN_NAV_LINKS.map((link, index) => (
-                <Fragment key={link.href}>
-                  <NavigationMenuItem>
-                    <NavigationMenuLink
-                      render={
-                        <Link
-                          href={link.href}
-                          className={cn(
-                            navigationMenuTriggerStyle(),
-                            "bg-transparent hover:bg-secondary hover:text-foreground-inverse text-foreground rounded-full px-4 py-2 transition-all border-none"
-                          )}
-                        >
-                          {link.label}
-                        </Link>
-                      }
-                    />
-                  </NavigationMenuItem>
-                  {index < MAIN_NAV_LINKS.length - 1 && (
-                    <div className="w-1 h-1 bg-foreground/60 rounded-full self-center" aria-hidden="true" />
-                  )}
-                </Fragment>
-              ))}
+            <NavigationMenuList className="bg-foreground-inverse/70 p-2 rounded-full gap-4 border border-white/10">
+              {MAIN_NAV_LINKS.map((link, index) => {
+                const isActive = isLinkActive(link.href);
+
+                return (
+                  <Fragment key={link.href}>
+                    <NavigationMenuItem>
+                      <NavigationMenuLink
+                        active={isActive}
+                        render={
+                          <Link
+                            href={link.href}
+                            onClick={() => {
+                              // Manually update hash state if it's an anchor link
+                              if (link.href.includes("#")) {
+                                setCurrentHash(`#${link.href.split("#")[1]}`);
+                              }
+                            }}
+                            className={cn(
+                              navigationMenuTriggerStyle(),
+                              "bg-transparent hover:bg-secondary/20 text-foreground rounded-full px-4 py-2 transition-all border-none",
+                              isActive && "bg-secondary text-foreground-inverse hover:bg-secondary hover:text-foreground-inverse shadow-sm"
+                            )}
+                          >
+                            {link.label}
+                          </Link>
+                        }
+                      />
+                    </NavigationMenuItem>
+                    {index < MAIN_NAV_LINKS.length - 1 && (
+                      <div className="w-1 h-1 bg-foreground/30 rounded-full self-center" aria-hidden="true" />
+                    )}
+                  </Fragment>
+                );
+              })}
             </NavigationMenuList>
           </NavigationMenu>
         </div>
