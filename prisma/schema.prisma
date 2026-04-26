@@ -1,0 +1,94 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "library"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Tipos de participación permitidos en el concurso
+enum ParticipationType {
+  /// Participación de una sola persona
+  INDIVIDUAL
+  /// Participación en equipo o grupo
+  COLLECTIVE
+}
+
+/// Estados por los que puede pasar una postulación
+enum SubmissionStatus {
+  /// Borrador guardado por el usuario
+  DRAFT
+  /// Enviada oficialmente para revisión
+  SUBMITTED
+  /// En proceso de evaluación por el jurado
+  UNDER_REVIEW
+  /// Seleccionada entre los mejores trabajos
+  FINALIST
+  /// Ganadora del concurso
+  WINNER
+  /// No cumple con los requisitos o rechazada
+  REJECTED
+}
+
+/// Modelo principal de Postulación — Almacena la propuesta creativa
+model Submission {
+  /// Identificador único (CUID)
+  id               String           @id @default(cuid())
+  /// Nombre del equipo o seudónimo
+  teamName         String           @db.VarChar(255)
+  /// Tipo de participación (Individual o Colectiva)
+  participationType ParticipationType @default(INDIVIDUAL)
+  /// Motivación de la propuesta (Texto largo)
+  motivation       String           @db.Text
+  /// Bases conceptuales del diseño
+  conceptualBasis  String           @db.Text
+  /// Narrativa país que acompaña la marca
+  countryNarrative String           @db.Text
+  /// Eslogan o frase representativa
+  slogan           String           @db.VarChar(500)
+  /// URL del archivo de identidad visual (Imagen/Vector)
+  visualIdentityUrl String?         @db.VarChar(1000)
+  /// URL del documento PDF detallado
+  proposalPdfUrl   String?          @db.VarChar(1000)
+  /// URL de la carta de autoría firmada
+  authorshipLetterUrl String?       @db.VarChar(1000)
+  /// Estado actual de la postulación
+  status           SubmissionStatus @default(SUBMITTED)
+  /// Fecha de creación del registro
+  createdAt        DateTime         @default(now())
+  /// Fecha de última actualización
+  updatedAt        DateTime         @updatedAt
+
+  /// Relación: Una postulación tiene uno o varios participantes (1:N)
+  participants     Participant[]
+
+  @@map("postulaciones")
+}
+
+/// Modelo de Participante — Almacena los datos personales de cada integrante
+model Participant {
+  /// Identificador único (CUID)
+  id                String     @id @default(cuid())
+  /// Nombre completo del participante
+  fullName          String     @db.VarChar(255)
+  /// Documento de identidad (Cédula o Pasaporte)
+  idDocument        String     @db.VarChar(50)
+  /// Correo electrónico de contacto
+  email             String     @db.VarChar(255)
+  /// Número de teléfono móvil
+  phone             String     @db.VarChar(30)
+  /// País donde reside actualmente
+  countryOfResidence String    @db.VarChar(100)
+  /// Indica si es el representante oficial del grupo
+  isRepresentative  Boolean    @default(false)
+  /// Fecha de registro del participante
+  createdAt         DateTime   @default(now())
+
+  /// ID de la postulación a la que pertenece (FK)
+  submissionId      String
+  /// Relación con la postulación principal
+  submission        Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@map("postulados")
+}
