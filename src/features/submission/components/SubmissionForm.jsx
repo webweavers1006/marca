@@ -60,6 +60,12 @@ export function SubmissionForm({ catalogs }) {
   async function onSubmit(values) {
     setIsSubmitting(true);
 
+    const selectedPaisId = Number(values.empresa?.id_pais);
+    const paisObj = catalogs.paises?.find(p => p.id === selectedPaisId);
+    const isVenezuela = paisObj?.pais?.toLowerCase() === "venezuela";
+    const naEstado = catalogs.estados?.find(e => e.estado === "N/A");
+    const naEstadoId = naEstado ? naEstado.id_estado : 26;
+
     // Parse numeric fields properly before sending
     const payload = {
       ...values,
@@ -72,7 +78,11 @@ export function SubmissionForm({ catalogs }) {
         id_tiempo_xp: Number(intg.id_tiempo_xp),
         id_nivel_educativo: Number(intg.id_nivel_educativo),
       })),
-      empresa: isEmpresaType() ? values.empresa : undefined,
+      empresa: isEmpresaType() ? {
+        ...values.empresa,
+        id_pais: selectedPaisId,
+        id_estado: isVenezuela ? Number(values.empresa.id_estado) : naEstadoId,
+      } : undefined,
     };
 
     try {
@@ -167,6 +177,38 @@ export function SubmissionForm({ catalogs }) {
               <div>
                 <label className="block mb-1">Teléfono</label>
                 <input {...register("empresa.telefono")} className="w-full border p-2 rounded" />
+              </div>
+              <div>
+                <label className="block mb-1">País</label>
+                <select {...register("empresa.id_pais")} className="w-full border p-2 rounded">
+                  <option value="">-- Selecciona --</option>
+                  {catalogs.paises?.map((p) => (
+                    <option key={p.id} value={p.id}>{p.pais}</option>
+                  ))}
+                </select>
+                {errors.empresa?.id_pais && <span className="text-red-500 text-xs">{errors.empresa.id_pais.message}</span>}
+              </div>
+              
+              {watch("empresa.id_pais") && catalogs.paises?.find(p => p.id === Number(watch("empresa.id_pais")))?.pais?.toLowerCase() === "venezuela" && (
+                <div>
+                  <label className="block mb-1">Estado</label>
+                  <select {...register("empresa.id_estado")} className="w-full border p-2 rounded">
+                    <option value="">-- Selecciona --</option>
+                    {catalogs.estados?.filter((e) => e.estado !== "N/A").map((e) => (
+                      <option key={e.id_estado} value={e.id_estado}>{e.estado}</option>
+                    ))}
+                  </select>
+                  {errors.empresa?.id_estado && <span className="text-red-500 text-xs">{errors.empresa.id_estado.message}</span>}
+                </div>
+              )}
+              
+              <div>
+                <label className="block mb-1">Provincia / Municipio</label>
+                <input {...register("empresa.provincia_municipio")} className="w-full border p-2 rounded" />
+              </div>
+              <div>
+                <label className="block mb-1">Ciudad</label>
+                <input {...register("empresa.ciudad")} className="w-full border p-2 rounded" />
               </div>
             </div>
           </section>

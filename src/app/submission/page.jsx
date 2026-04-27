@@ -13,6 +13,19 @@ export default async function SubmissionPage() {
   const nivelesEducativos = await db.niveles_educativos.findMany();
   const tipoParticipacion = await db.tipo_participacion.findMany();
   const mediosDifusion = await db.medios_difusion.findMany();
+  
+  // New catalogs
+  const rawPaises = await db.paises.findMany({ orderBy: { pais: 'asc' } });
+  
+  // Mover a Venezuela a la primera posición
+  const paises = [...rawPaises];
+  const venezuelaIndex = paises.findIndex((p) => p.pais && p.pais.toLowerCase() === "venezuela");
+  if (venezuelaIndex !== -1) {
+    const venezuela = paises.splice(venezuelaIndex, 1)[0];
+    paises.unshift(venezuela);
+  }
+
+  const estados = await db.estados.findMany({ orderBy: { estado: 'asc' } });
 
   const catalogs = {
     tiposIntegrantes,
@@ -21,6 +34,8 @@ export default async function SubmissionPage() {
     nivelesEducativos,
     tipoParticipacion,
     mediosDifusion,
+    paises,
+    estados,
   };
 
   return <SubmissionForm catalogs={catalogs} />;

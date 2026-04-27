@@ -16,6 +16,8 @@ export const empresaSchema = z.object({
   numero_registro_fiscal: z.string().max(100).optional().or(z.literal("")),
   email: z.string().email("Correo válido").optional().or(z.literal("")),
   telefono: z.string().max(50).optional().or(z.literal("")),
+  id_pais: z.coerce.number().int().positive("Debe seleccionar un país"),
+  id_estado: z.coerce.number().int().positive("Debe seleccionar un estado").optional().or(z.literal(0)),
   provincia_municipio: z.string().max(255).optional().or(z.literal("")),
   ciudad: z.string().max(255).optional().or(z.literal("")),
 });

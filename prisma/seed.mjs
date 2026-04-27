@@ -16,7 +16,7 @@ async function main() {
   // 1. tipos_integrantes
   await prisma.tipos_integrantes.createMany({
     data: [
-      { tipo_integrante: "Representante Legal" },
+      { tipo_integrante: "Representante Principal" },
       { tipo_integrante: "Socio" },
       { tipo_integrante: "Colaborador" },
     ],

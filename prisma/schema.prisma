@@ -68,7 +68,31 @@ model empresas {
   provincia_municipio    String?  @db.VarChar(255)
   ciudad                 String?  @db.VarChar(255)
 
+  pais                   paises?  @relation(fields: [id_pais], references: [id])
+  estado_rel             estados? @relation(fields: [id_estado], references: [id_estado])
+
   postulaciones          empresas_postulaciones[]
+}
+
+// 6.1 Tabla: paises
+model paises {
+  id           Int       @id @default(autoincrement())
+  pais         String?   @db.VarChar(150)
+  codigo       Int
+  id_condicion Int?     
+  created      DateTime?
+  updated      DateTime?
+
+  empresas     empresas[]
+}
+
+// 6.2 Tabla: estados
+model estados {
+  id_estado    Int      @id @default(autoincrement())
+  estado       String   @db.VarChar(250)
+  iso_3166_2   String   @map("iso_3166-2") @db.VarChar(4)
+
+  empresas     empresas[]
 }
 
 // 7. Tabla: tipo_participacion
