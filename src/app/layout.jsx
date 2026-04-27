@@ -1,16 +1,11 @@
-import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import { Navbar } from "@/components/shared/Navbar";
 import { Footer } from "@/components/shared/Footer";
 import { SITE_CONFIG } from "@/features/shared/config/site.config";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { madeTommy, madeTommyOutline, inter } from "@/features/shared/config/fonts.config";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ActiveThemeProvider } from "@/components/shared/providers/active-theme-provider";
 import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 export const metadata = {
   title: SITE_CONFIG.title,
@@ -25,24 +20,26 @@ export const metadata = {
  */
 export default function RootLayout({ children }) {
   return (
-    <html lang="es" className={inter.variable}>
-      <body>
-        <Navbar />
-        <SpeedInsights />
-        <main id="main-content" role="main">
-          {children}
-        </main>
-        <Footer />
-        <Toaster
-          position={SITE_CONFIG.toaster.position}
-          richColors
-          toastOptions={{
-            style: {
-              fontFamily: "var(--font-inter)",
-              fontSize: SITE_CONFIG.toaster.fontSize,
-            },
-          }}
-        />
+    <html lang="es" className={`${madeTommy.variable} ${madeTommyOutline.variable} ${inter.variable}`}>
+      <body className="antialiased">
+        <ActiveThemeProvider>
+          <Navbar />
+          <SpeedInsights />
+          <main id="main-content" role="main">
+            {children}
+          </main>
+          <Footer />
+          <Toaster
+            position={SITE_CONFIG.toaster.position}
+            richColors
+            toastOptions={{
+              style: {
+                fontFamily: "var(--font-made-tommy)",
+                fontSize: SITE_CONFIG.toaster.fontSize,
+              },
+            }}
+          />
+        </ActiveThemeProvider>
       </body>
     </html>
   );

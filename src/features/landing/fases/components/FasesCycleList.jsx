@@ -7,13 +7,13 @@ import {
 } from "@/features/shared/config/animations.config";
 
 /**
- * FasesCycleList — Vertical index style list for the editorial layout.
- * Optimized to match the bold block aesthetic of FasesActiveCycle.
+ * FasesCycleList — Vertical index list for the editorial layout.
+ * Uses the module theme (e.g. tertiary/magenta) for active state highlights.
  *
- * @param {{ cycles: Array, currentCycleId: string, onSelect?: function }} props
+ * @param {{ cycles: Array, currentCycleId: string, onSelect?: function, theme: object }} props
  */
-export function FasesCycleList({ cycles, currentCycleId, onSelect }) {
-  const activeIndex = cycles.findIndex((c) => c.id === currentCycleId);
+export function FasesCycleList({ cycles, currentCycleId, onSelect, theme }) {
+  const accentClass = theme?.accentText || "text-foreground-inverse";
 
   return (
     <motion.div
@@ -21,11 +21,10 @@ export function FasesCycleList({ cycles, currentCycleId, onSelect }) {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
-      className="flex flex-col gap-1"
+      className="flex flex-col"
     >
-      {cycles.map((cycle, index) => {
+      {cycles.map((cycle) => {
         const isActive = cycle.id === currentCycleId;
-        const isPast = index < activeIndex;
 
         return (
           <motion.button
@@ -33,40 +32,51 @@ export function FasesCycleList({ cycles, currentCycleId, onSelect }) {
             variants={sectionItemVariants}
             onClick={() => onSelect?.(cycle.id)}
             className={`
-              relative flex items-center gap-3 p-2 transition-all duration-300 text-left rounded-lg
-              border border-transparent
-              ${isActive
-                ? "bg-foreground-inverse shadow-md scale-[1.02] border-foreground-inverse/20"
-                : "hover:bg-foreground-inverse/5"}
+              group relative flex items-center gap-3 py-2 border-b border-foreground-inverse/10 last:border-b-0
+              transition-all duration-300 text-left w-full
+              ${isActive ? "pl-3 opacity-100" : "opacity-60 hover:opacity-100"}
             `}
           >
-            {/* Number Block (Ultra-compact version) */}
+            {/* Active Indicator Background */}
+            {isActive && (
+              <motion.div
+                layoutId="fases-active-bg"
+                className="absolute inset-0 bg-foreground-inverse/5 rounded-md -z-10"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              />
+            )}
+
+            {/* Active Side Line */}
+            {isActive && (
+              <motion.div
+                layoutId="fases-active-line"
+                className={`absolute left-0 top-1/4 bottom-1/4 w-[2px] ${theme.bg}`}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              />
+            )}
+
+            {/* Number Block */}
             <div className={`
-              flex items-center justify-center w-8 h-8 rounded font-black text-[12px] shrink-0 transition-colors
-              ${isActive ? "bg-secondary text-foreground-inverse" : isPast ? "bg-secondary/20 text-primary" : "bg-foreground-inverse/10 text-foreground-inverse/40"}
+              flex flex-col items-center justify-center w-6 shrink-0
+              transition-colors
             `}>
-              {cycle.numero}
+              <span className={`text-[9px] font-black tracking-widest ${isActive ? accentClass : "text-foreground-inverse/50"}`}>
+                Nº
+              </span>
+              <span className={`text-base font-black leading-none ${isActive ? "text-foreground-inverse" : "text-foreground-inverse/50"}`}>
+                {cycle.numero}
+              </span>
             </div>
 
             {/* Title */}
-            <p
-              className={`
-                text-[12px] font-bold leading-tight flex-1
-                ${isActive ? "text-foreground" : isPast ? "text-foreground-inverse/80" : "text-foreground-inverse/40"}
-                transition-colors
-              `}
-            >
+            <p className={`
+              text-xs font-bold leading-tight flex-1
+              ${isActive ? "text-foreground-inverse" : "text-foreground-inverse/70"}
+              transition-colors
+            `}>
               {cycle.titulo}
             </p>
 
-            {/* Active indicator bar */}
-            {isActive && (
-              <motion.span
-                layoutId="active-marker"
-                className="w-1.5 h-1.5 rounded-full bg-secondary"
-                aria-hidden="true"
-              />
-            )}
           </motion.button>
         );
       })}

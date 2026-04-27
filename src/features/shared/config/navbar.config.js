@@ -8,12 +8,14 @@ import logoMarcapais2 from "@/assets/images/marcapais2.png";
 export const NAVBAR_CONFIG = {
   logoAriaLabel: "Inicio - Marca País Venezuela",
   navAriaLabel: "Navegación principal",
+  scrollThreshold: 80,
   logo: {
     useImage: false,
     component: Logomarcalarge,
     alt: "Marca País Logo",
     width: 500,
     height: 500,
+    className: "object-contain w-[150px] h-[60px]",
   },
   logo2: {
     useImage: true,
@@ -21,6 +23,7 @@ export const NAVBAR_CONFIG = {
     alt: "Marca País Logo Scrolled",
     width: 500,
     height: 500,
+    className: "object-contain w-[150px] h-[100px]",
   },
   cta: {
     label: "Postula ahora",

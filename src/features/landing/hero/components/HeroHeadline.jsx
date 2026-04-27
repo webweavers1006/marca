@@ -8,7 +8,7 @@ import { Heading } from "@/components/shared/Heading";
 
 /**
  * HeroHeadline — the main title of the hero rendered in two lines.
- * Uses Inter Bold with tighter tracking for a unified, modern look.
+ * Uses MADE TOMMY Bold with tighter tracking for a unified, modern look.
  * Line 2 features a typewriter effect with a primary background highlight.
  * @param {{ titleLine1: string, titleLine2: string }} props
  */
@@ -19,15 +19,13 @@ export function HeroHeadline({ titleLine1, titleLine2 }) {
       variant="hero"
       animate
       variants={heroItemVariants}
-      className="text-foreground mb-5"
+      className="text-foreground mb-5 relative z-10"
     >
       <span className="block text-foreground-inverse">{titleLine1}</span>
 
-      {/* Version con efecto de escritura (Activa) */}
-      <span className="inline-block text-secondary rounded-2xl whitespace-nowrap">
+      <span className="inline-block text-primary whitespace-nowrap">
         <Typewriter text={titleLine2} loop={true} />
       </span>
     </Heading>
-
   );
 }

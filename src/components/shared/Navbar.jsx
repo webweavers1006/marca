@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useActiveLink } from "@/features/shared/hooks/use-active-link";
 import { useState, Fragment } from "react";
 import { Menu, X, Globe } from "lucide-react";
 import { MAIN_NAV_LINKS } from "@/features/shared/config/routes.config";
@@ -16,11 +15,12 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { MobileMenu } from "./MobileMenu";
 import { useScrollThreshold } from "@/features/shared/hooks/use-scroll-threshold";
 import { BrandIcon } from "./BrandIcon";
+import { useActiveTheme } from "@/components/shared/providers/active-theme-provider";
+import { useAppNavigation } from "@/features/shared/hooks/use-app-navigation";
 
 /**
  * Premium Navigation Bar using native CSS sticky positioning and Shadcn UI.
@@ -29,14 +29,15 @@ import { BrandIcon } from "./BrandIcon";
  */
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isScrolled = useScrollThreshold("viewport", 80);
-  const { isLinkActive, setCurrentHash } = useActiveLink();
+  const isScrolled = useScrollThreshold("viewport", NAVBAR_CONFIG.scrollThreshold || 80);
+  const { activeSection, setActiveSection, activeTheme } = useActiveTheme();
+  const { navigateToSection } = useAppNavigation();
 
   return (
     <header
       className={cn(
         "fixed top-0 z-50 w-full transition-all duration-500 ease-in-out bg-transparent",
-        isScrolled ? "py-0 bg-foreground/40" : "py-2"
+        isScrolled ? "py-1 bg-foreground/60" : "py-2"
       )}
       role="banner"
     >
@@ -47,6 +48,7 @@ export function Navbar() {
         {/* Left: Logo */}
         <Link
           href="/"
+          onClick={() => setActiveSection("/")}
           className="flex items-center gap-2 group transition-transform hover:scale-105"
           aria-label={NAVBAR_CONFIG.logoAriaLabel}
         >
@@ -56,26 +58,17 @@ export function Navbar() {
               alt={NAVBAR_CONFIG.logo.alt}
               width={NAVBAR_CONFIG.logo.width}
               height={NAVBAR_CONFIG.logo.height}
-              className="object-contain w-[150px] h-[100px]"
+              className={NAVBAR_CONFIG.logo.className || "object-contain w-[150px] h-[100px]"}
               priority
             />
-          ) : NAVBAR_CONFIG.logo?.component ? (
+          ) : (
             <BrandIcon
               icon={NAVBAR_CONFIG.logo.component}
               className={cn(
-                "object-contain w-[150px] h-[100px] transition-colors duration-500",
-                isScrolled ? "text-primary" : "text-foreground-inverse"
+                NAVBAR_CONFIG.logo.className || "object-contain w-[150px] h-[60px]",
+                "transition-colors duration-500 text-foreground-inverse"
               )}
             />
-          ) : (
-            <>
-              <div className="bg-foreground p-1.5 rounded-lg text-background group-hover:rotate-12 transition-transform shadow-sm">
-                <Globe size={18} strokeWidth={2.5} />
-              </div>
-              <span className="font-bold text-xl tracking-tighter text-foreground uppercase">
-                {SITE_CONFIG.shortName}
-              </span>
-            </>
           )}
         </Link>
 
@@ -84,25 +77,22 @@ export function Navbar() {
           <NavigationMenu>
             <NavigationMenuList className="bg-foreground-inverse/70 p-2 rounded-full gap-4 border border-white/10">
               {MAIN_NAV_LINKS.map((link, index) => {
-                const isActive = isLinkActive(link.href);
+                const isActive = activeSection === link.href;
 
                 return (
                   <Fragment key={link.href}>
                     <NavigationMenuItem>
                       <NavigationMenuLink
-                        active={isActive}
                         render={
                           <Link
                             href={link.href}
-                            onClick={() => {
-                              // Manually update hash state to ensure immediate UI feedback
-                              const hash = link.href.includes("#") ? `#${link.href.split("#")[1]}` : "";
-                              setCurrentHash(hash);
-                            }}
+                            aria-current={isActive ? "page" : undefined}
+                            onClick={() => navigateToSection(link.href)}
                             className={cn(
-                              navigationMenuTriggerStyle(),
-                              "bg-transparent hover:bg-secondary/20 text-foreground rounded-full px-4 py-2 transition-all border-none",
-                              isActive && "bg-secondary text-foreground-inverse hover:bg-secondary hover:text-foreground-inverse shadow-sm"
+                              "inline-flex h-auto w-max items-center justify-center text-sm font-medium disabled:pointer-events-none disabled:opacity-50",
+                              "bg-transparent text-foreground rounded-full px-4 py-2 transition-all border-none focus:outline-none",
+                              !isActive && link.theme?.navHover,
+                              isActive && link.theme?.navActive
                             )}
                           >
                             {link.label}
@@ -125,8 +115,10 @@ export function Navbar() {
           <Button
             render={<Link href={NAVBAR_CONFIG.cta.href} />}
             nativeButton={false}
-            variant="secondary"
-            className="text-foreground-inverse h-auto px-4 py-3 text-sm rounded-3xl font-semibold hover:text-foreground-inverse transition-all active:scale-95"
+            variant="ghost"
+            className={cn(
+              "h-auto px-6 py-3 text-sm rounded-3xl font-semibold transition-all active:scale-95 shadow-sm hover:opacity-90 bg-foreground-inverse text-foreground hover:bg-foreground-inverse/90",
+            )}
           >
             {NAVBAR_CONFIG.cta.label}
           </Button>
@@ -135,7 +127,9 @@ export function Navbar() {
         {/* Mobile: Hamburger Button */}
         <button
           onClick={() => setIsMenuOpen((v) => !v)}
-          className="nav:hidden p-2 text-foreground-inverse hover:bg-foreground-inverse/10 rounded-lg transition-colors"
+          className={cn(
+            "nav:hidden p-2 rounded-lg transition-colors text-foreground-inverse hover:bg-foreground-inverse/10",
+          )}
           aria-expanded={isMenuOpen}
           aria-label={isMenuOpen ? NAVBAR_CONFIG.hamburger.closeLabel : NAVBAR_CONFIG.hamburger.openLabel}
           id="navbar-hamburger-btn"

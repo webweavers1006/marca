@@ -1,11 +1,13 @@
+import { BRAND_THEMES } from "@/features/shared/config/theme.config";
+
 export const NAV_LINKS = [
-  { href: "/", label: "Inicio" },
-  { href: "/#el-concurso", label: "El Concurso" },
-  { href: "/#fases", label: "Fases de Selección" },
-  { href: "/#cronograma", label: "Cronograma" },
-  { href: "/#jurado", label: "Jurado" },
+  { href: "/", label: "Inicio", theme: BRAND_THEMES[0] },
+  { href: "/#el-concurso", label: "El Concurso", theme: BRAND_THEMES[1] },
+  { href: "/#cronograma", label: "Cronograma", theme: BRAND_THEMES[2] },
+  { href: "/#fases", label: "Fases de Selección", theme: BRAND_THEMES[3] },
+  { href: "/#jurado", label: "Jurado", theme: BRAND_THEMES[4] },
   /*   { href: "/#impacto", label: "Impacto" }, */
-  { href: "/submission", label: "Postúlate" },
+  { href: "/submission", label: "Postúlate", theme: BRAND_THEMES[5] },
 ];
 
 // "Postúlate" is excluded from desktop nav (navbar already has a CTA button)

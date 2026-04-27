@@ -27,14 +27,8 @@ export function Heading({
   variants = sectionItemVariants,
   ...props 
 }) {
-  const alignments = {
-    left: "text-left mr-auto",
-    center: "text-center mx-auto",
-    right: "text-right ml-auto",
-  };
-
   const baseClasses = HEADING_CONFIG.variants[variant] || HEADING_CONFIG.variants.section;
-  const alignmentClasses = alignments[align] || alignments.left;
+  const alignmentClasses = HEADING_CONFIG.alignments[align] || HEADING_CONFIG.alignments.left;
   const combinedClasses = `${baseClasses} ${alignmentClasses} ${className}`;
 
 

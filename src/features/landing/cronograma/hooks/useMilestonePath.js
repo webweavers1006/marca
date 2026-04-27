@@ -2,8 +2,9 @@ import { useMemo } from "react";
 import { MILESTONES } from "../config/cronograma.content.config";
 
 // ─── Layout constants ─────────────────────────────────────────
-const ROW_H = 130;   // px per grid row — controls compactness
-const VB_W = 100;    // SVG viewBox width  (unitless)
+const ROW_H = 96;   // px per grid row — controls compactness
+const DESKTOP_VB_W = 100;
+const MOBILE_VB_W = 48;
 const VB_H = ROW_H * MILESTONES.length; // SVG viewBox height
 
 // Tailwind row-start classes indexed by milestone order
@@ -13,9 +14,10 @@ const ROW_START_CLASSES = [
 ];
 
 // ─── Geometry helpers ─────────────────────────────────────────
-function computeNodes() {
+function computeNodes(isMobile = false) {
   return MILESTONES.map((m, i) => ({
-    cx: m.side === "left" ? 28 : 72,
+    // Mobile is centered in 48px, Desktop alternates in 100px
+    cx: isMobile ? 24 : (m.side === "left" ? 28 : 72),
     cy: i * ROW_H + ROW_H / 2, // exact centre of each grid row
   }));
 }
@@ -27,6 +29,15 @@ function buildSerpentinePath(nodes) {
     const c = nodes[i];
     const mid = (p.cy + c.cy) / 2;
     d += ` C ${p.cx} ${mid}, ${c.cx} ${mid}, ${c.cx} ${c.cy}`;
+  }
+  return d;
+}
+
+function buildStraightPath(nodes) {
+  let d = `M ${nodes[0].cx} ${nodes[0].cy}`;
+  for (let i = 1; i < nodes.length; i++) {
+    const c = nodes[i];
+    d += ` L ${c.cx} ${c.cy}`;
   }
   return d;
 }
@@ -59,37 +70,50 @@ const cardVariants = {
   }),
 };
 
+const mobileCardVariants = {
+  hidden: () => ({ opacity: 0, x: -16 }), // Always from left on mobile
+  visible: (i) => ({
+    opacity: 1,
+    x: 0,
+    transition: { delay: 0.3 + i * 0.28, duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+  }),
+};
+
 /**
  * useMilestonePath — Provides all geometry, layout constants,
- * and animation variants needed to render the serpentine roadmap.
- *
- * @returns {{
- *   milestones: object[],
- *   nodes: {cx: number, cy: number}[],
- *   pathD: string,
- *   rowH: number,
- *   vbW: number,
- *   vbH: number,
- *   rowStartClasses: string[],
- *   variants: { path, node, card },
- * }}
+ * and animation variants needed to render the serpentine and straight roadmaps.
  */
 export function useMilestonePath() {
-  const nodes = useMemo(() => computeNodes(), []);
-  const pathD = useMemo(() => buildSerpentinePath(nodes), [nodes]);
+  const desktopNodes = useMemo(() => computeNodes(false), []);
+  const desktopPathD = useMemo(() => buildSerpentinePath(desktopNodes), [desktopNodes]);
+
+  const mobileNodes = useMemo(() => computeNodes(true), []);
+  const mobilePathD = useMemo(() => buildStraightPath(mobileNodes), [mobileNodes]);
 
   return {
     milestones: MILESTONES,
-    nodes,
-    pathD,
     rowH: ROW_H,
-    vbW: VB_W,
     vbH: VB_H,
     rowStartClasses: ROW_START_CLASSES,
-    variants: {
-      path: pathVariants,
-      node: nodeVariants,
-      card: cardVariants,
+    desktop: {
+      vbW: DESKTOP_VB_W,
+      nodes: desktopNodes,
+      pathD: desktopPathD,
+      variants: {
+        path: pathVariants,
+        node: nodeVariants,
+        card: cardVariants,
+      },
     },
+    mobile: {
+      vbW: MOBILE_VB_W,
+      nodes: mobileNodes,
+      pathD: mobilePathD,
+      variants: {
+        path: pathVariants,
+        node: nodeVariants,
+        card: mobileCardVariants,
+      },
+    }
   };
 }

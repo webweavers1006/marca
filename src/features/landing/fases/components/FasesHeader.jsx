@@ -13,8 +13,9 @@ import { Heading } from "@/components/shared/Heading";
  * @param {string} props.label - Section eyebrow text.
  * @param {string} props.titulo - Main section title.
  * @param {string} [props.tituloHighlight] - Text within the title to highlight with primary color.
+ * @param {object} props.theme - The active cycle theme object.
  */
-export function FasesHeader({ label, titulo, tituloHighlight }) {
+export function FasesHeader({ label, titulo, tituloHighlight, theme }) {
   return (
     <motion.div
       variants={sectionContainerVariants}
@@ -24,22 +25,23 @@ export function FasesHeader({ label, titulo, tituloHighlight }) {
     >
       <SectionLabel
         label={label}
-        variant="hero"
+        variant="inverse"
         animate
         className="mb-6"
       />
+
 
       <Heading
         as="h2"
         variant="section"
         animate
         id="fases-heading"
-        className="text-foreground-inverse max-w-3xl"
+        className="text-foreground-inverse"
       >
         {tituloHighlight ? (
           <>
             {titulo.split(tituloHighlight)[0]}
-            <span className="text-primary">
+            <span className={`${theme?.accentText || theme?.text || "text-primary"} transition-colors duration-500`}>
               {tituloHighlight}
             </span>
             {titulo.split(tituloHighlight)[1]}

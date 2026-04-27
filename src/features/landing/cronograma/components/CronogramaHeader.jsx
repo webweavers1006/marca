@@ -7,37 +7,30 @@ import { Heading } from "@/components/shared/Heading";
 
 /**
  * CronogramaHeader — Section eyebrow, main title, and subtitle.
- *
- * @param {object} props
- * @param {string} props.label
- * @param {string} props.titulo
- * @param {string} props.tituloHighlight
- * @param {string} props.subtitulo
- * @param {boolean} [props.darkMode] — adapts text colors for dark backgrounds
  */
-export function CronogramaHeader({ label, titulo, tituloHighlight, subtitulo, darkMode }) {
+export function CronogramaHeader({ label, titulo, tituloHighlight, subtitulo, theme }) {
   return (
     <motion.div
       variants={sectionContainerVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
-      className="text-center mb-20 max-w-2xl mx-auto"
+      className="max-w-2xl text-left"
     >
-      <SectionLabel label={label} animate variant="hero" className="mb-6 justify-center" />
+      <SectionLabel label={label} variant="inverse" className="mb-6" />
 
       <Heading
         as="h2"
         variant="section"
-        align="center"
+        align="left"
         animate
         id="cronograma-heading"
-        className={darkMode ? "text-foreground-inverse mb-6" : "text-foreground mb-6"}
+        className="text-foreground-inverse mb-6"
       >
         {tituloHighlight ? (
           <>
             {titulo.split(tituloHighlight)[0]}
-            <span className="text-primary">{tituloHighlight}</span>
+            <span className={`font-bold ${theme.accentText || ""}`}>{tituloHighlight}</span>
             {titulo.split(tituloHighlight)[1]}
           </>
         ) : (
@@ -47,7 +40,7 @@ export function CronogramaHeader({ label, titulo, tituloHighlight, subtitulo, da
 
       <motion.p
         variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 } } }}
-        className={darkMode ? "text-base md:text-lg text-muted-inverse leading-relaxed" : "text-base md:text-lg text-foreground/55 leading-relaxed"}
+        className="text-base md:text-lg text-foreground-inverse/80 leading-relaxed"
       >
         {subtitulo}
       </motion.p>

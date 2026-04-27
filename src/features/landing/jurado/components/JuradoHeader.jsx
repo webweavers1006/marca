@@ -1,17 +1,19 @@
 import { SectionLabel } from "@/components/shared/SectionLabel";
 import { Heading } from "@/components/shared/Heading";
 
-export function JuradoHeader({ label, titulo, tituloHighlight, subtitulo }) {
+export function JuradoHeader({ label, titulo, tituloHighlight, subtitulo, theme }) {
   return (
-    <div className="mb-16 md:mb-24 max-w-2xl">
-      <SectionLabel label={label} animate />
+    <div className="mb-12 lg:mb-0 max-w-2xl ml-auto text-right">
+      <div className="flex justify-end">
+        <SectionLabel label={label} variant="inverse" />
+      </div>
 
-      <Heading as="h2" variant="section" id="jurado-heading" className="mt-6 mb-6">
+      <Heading as="h2" variant="section" align="right" id="jurado-heading" className="mt-6 mb-6 text-foreground-inverse">
         {titulo}{" "}
-        <span className="text-primary">{tituloHighlight}</span>
+        <span className={`font-bold ${theme.accentText || ""}`}>{tituloHighlight}</span>
       </Heading>
 
-      <p className="text-foreground/70 text-lg md:text-xl leading-relaxed">
+      <p className="text-foreground-inverse/80 text-lg md:text-xl leading-relaxed">
         {subtitulo}
       </p>
     </div>

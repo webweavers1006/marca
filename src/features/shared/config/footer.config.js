@@ -1,26 +1,31 @@
 import { MessageSquareHeart } from "lucide-react";
-import { Logomarca } from "@/assets/icons/logos";
+import { Logomarcalarge } from "@/assets/icons/logos";
+import imgFondo from "@/assets/images/fondos/Guasdualito.jpg";
 
 /**
  * Footer UI configuration.
  * Separates UI text strings from the component logic.
  */
 export const FOOTER_CONFIG = {
+  background: {
+    enabled: true,
+    src: imgFondo,
+    overlayClass: "opacity-95",
+  },
   brand: {
     useLogoComponent: true,
-    logoComponent: Logomarca,
+    logoComponent: Logomarcalarge,
     logoImage: null,
     logoText: "Venezuela",
     logoSubtext: "abierta al futuro",
-    title: [
-      { text: "Venezuela es historia,\n", highlight: true },
-      { text: "identidad y ", highlight: false },
-      { text: "visión de futuro.", highlight: true },
+    title: null,
+    subtitle: [
+      { text: "TU VISIÓN, ", highlight: false },
+      { text: "NUESTRA MARCA", highlight: true }
     ],
-    subtitle: "Una Marca País construida para proyectarse y perdurar.",
   },
   contact: {
-    title: "CONTACTANOS",
+    title: "CONTÁCTANOS",
     columns: [
       {
         id: "col-1",
