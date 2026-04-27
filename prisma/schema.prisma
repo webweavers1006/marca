@@ -7,88 +7,116 @@ datasource db {
   provider = "postgresql"
 }
 
-/// Tipos de participación permitidos en el concurso
-enum ParticipationType {
-  /// Participación de una sola persona
-  INDIVIDUAL
-  /// Participación en equipo o grupo
-  COLLECTIVE
+// 1. Tabla: tipos_integrantes
+model tipos_integrantes {
+  id              Int           @id @default(autoincrement())
+  tipo_integrante String        @db.VarChar(100)
+  integrantes     integrantes[]
 }
 
-/// Estados por los que puede pasar una postulación
-enum SubmissionStatus {
-  /// Borrador guardado por el usuario
-  DRAFT
-  /// Enviada oficialmente para revisión
-  SUBMITTED
-  /// En proceso de evaluación por el jurado
-  UNDER_REVIEW
-  /// Seleccionada entre los mejores trabajos
-  FINALIST
-  /// Ganadora del concurso
-  WINNER
-  /// No cumple con los requisitos o rechazada
-  REJECTED
+// 2. Tabla: areas_xp
+model areas_xp {
+  id          Int           @id @default(autoincrement())
+  area        String        @db.VarChar(100)
+  integrantes integrantes[]
 }
 
-/// Modelo principal de Postulación — Almacena la propuesta creativa
-model Submission {
-  /// Identificador único (CUID)
-  id               String           @id @default(cuid())
-  /// Nombre del equipo o seudónimo
-  teamName         String           @db.VarChar(255)
-  /// Tipo de participación (Individual o Colectiva)
-  participationType ParticipationType @default(INDIVIDUAL)
-  /// Motivación de la propuesta (Texto largo)
-  motivation       String           @db.Text
-  /// Bases conceptuales del diseño
-  conceptualBasis  String           @db.Text
-  /// Narrativa país que acompaña la marca
-  countryNarrative String           @db.Text
-  /// Eslogan o frase representativa
-  slogan           String           @db.VarChar(500)
-  /// URL del archivo de identidad visual (Imagen/Vector)
-  visualIdentityUrl String?         @db.VarChar(1000)
-  /// URL del documento PDF detallado
-  proposalPdfUrl   String?          @db.VarChar(1000)
-  /// URL de la carta de autoría firmada
-  authorshipLetterUrl String?       @db.VarChar(1000)
-  /// Estado actual de la postulación
-  status           SubmissionStatus @default(SUBMITTED)
-  /// Fecha de creación del registro
-  createdAt        DateTime         @default(now())
-  /// Fecha de última actualización
-  updatedAt        DateTime         @updatedAt
-
-  /// Relación: Una postulación tiene uno o varios participantes (1:N)
-  participants     Participant[]
-
-  @@map("postulaciones")
+// 3. Tabla: tiempos_xp
+model tiempos_xp {
+  id          Int           @id @default(autoincrement())
+  tiempo      String        @db.VarChar(100)
+  integrantes integrantes[]
 }
 
-/// Modelo de Participante — Almacena los datos personales de cada integrante
-model Participant {
-  /// Identificador único (CUID)
-  id                String     @id @default(cuid())
-  /// Nombre completo del participante
-  fullName          String     @db.VarChar(255)
-  /// Documento de identidad (Cédula o Pasaporte)
-  idDocument        String     @db.VarChar(50)
-  /// Correo electrónico de contacto
-  email             String     @db.VarChar(255)
-  /// Número de teléfono móvil
-  phone             String     @db.VarChar(30)
-  /// País donde reside actualmente
-  countryOfResidence String    @db.VarChar(100)
-  /// Indica si es el representante oficial del grupo
-  isRepresentative  Boolean    @default(false)
-  /// Fecha de registro del participante
-  createdAt         DateTime   @default(now())
+// 4. Tabla: niveles_educativos
+model niveles_educativos {
+  id              Int           @id @default(autoincrement())
+  nivel_educativo String        @db.VarChar(100)
+  integrantes     integrantes[]
+}
 
-  /// ID de la postulación a la que pertenece (FK)
-  submissionId      String
-  /// Relación con la postulación principal
-  submission        Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+// 5. Tabla: integrantes
+model integrantes {
+  id                 Int      @id @default(autoincrement())
+  nombre             String   @db.VarChar(255)
+  identificacion     String   @db.VarChar(50)
+  email              String?  @db.VarChar(255)
+  telefono           String?  @db.VarChar(50)
+  
+  id_tipo_integrante Int?
+  id_area_xp         Int?
+  id_tiempo_xp       Int?
+  id_nivel_educativo Int?
 
-  @@map("postulados")
+  tipo_integrante    tipos_integrantes?  @relation(fields: [id_tipo_integrante], references: [id])
+  area_xp            areas_xp?           @relation(fields: [id_area_xp], references: [id])
+  tiempo_xp          tiempos_xp?         @relation(fields: [id_tiempo_xp], references: [id])
+  nivel_educativo    niveles_educativos? @relation(fields: [id_nivel_educativo], references: [id])
+
+  postulaciones      integrantes_postulaciones[]
+}
+
+// 6. Tabla: empresas
+model empresas {
+  id                     Int      @id @default(autoincrement())
+  nombre                 String   @db.VarChar(255)
+  numero_registro_fiscal String?  @db.VarChar(100)
+  email                  String?  @db.VarChar(255)
+  telefono               String?  @db.VarChar(50)
+  id_pais                Int?
+  id_estado              Int?
+  provincia_municipio    String?  @db.VarChar(255)
+  ciudad                 String?  @db.VarChar(255)
+
+  postulaciones          empresas_postulaciones[]
+}
+
+// 7. Tabla: tipo_participacion
+model tipo_participacion {
+  id            Int      @id @default(autoincrement())
+  participacion String   @db.VarChar(100)
+  postulaciones postulaciones[]
+}
+
+// 8. Tabla: medios_difusion
+model medios_difusion {
+  id            Int      @id @default(autoincrement())
+  medio         String   @db.VarChar(100)
+  postulaciones postulaciones[]
+}
+
+// 9. Tabla: postulaciones
+model postulaciones {
+  id                             Int      @id @default(autoincrement())
+  id_tipo_participacion          Int?
+  descripcion_proyecto_relevante String?  @db.Text
+  enlace_proyectos_previos       String?  @db.VarChar(500)
+  id_medio_difusion              Int?
+  fase2                          Boolean  @default(false)
+
+  tipo_participacion             tipo_participacion? @relation(fields: [id_tipo_participacion], references: [id])
+  medio_difusion                 medios_difusion?    @relation(fields: [id_medio_difusion], references: [id])
+
+  empresas                       empresas_postulaciones[]
+  integrantes                    integrantes_postulaciones[]
+}
+
+// 10. Tabla puente: empresas_postulaciones
+model empresas_postulaciones {
+  id             Int      @id @default(autoincrement())
+  id_empresa     Int?
+  id_postulacion Int?
+
+  empresa        empresas?      @relation(fields: [id_empresa], references: [id])
+  postulacion    postulaciones? @relation(fields: [id_postulacion], references: [id])
+}
+
+// 11. Tabla puente: integrantes_postulaciones
+model integrantes_postulaciones {
+  id             Int      @id @default(autoincrement())
+  id_integrante  Int?
+  id_postulacion Int?
+
+  integrante     integrantes?   @relation(fields: [id_integrante], references: [id])
+  postulacion    postulaciones? @relation(fields: [id_postulacion], references: [id])
 }
