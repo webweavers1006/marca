@@ -25,7 +25,6 @@ export function BrandColorBand({
       <div className="flex-1 bg-tertiary" />
       <div className="flex-1 bg-quaternary" />
       <div className="flex-1 bg-quinary" />
-      <div className="flex-1 bg-senary" />
     </div>
   );
 }

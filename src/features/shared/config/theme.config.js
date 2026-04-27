@@ -1,13 +1,15 @@
 /**
- * Global brand themes defining the 6 core color palettes.
+ * Global brand themes defining the 5 core color palettes for this branch.
+ * Colors: primary (gold), secondary (navy), tertiary (blue), quaternary (red), quinary (green).
  * Used across features to maintain the "Construcción Identitaria" visual language.
  */
 export const BRAND_THEMES = [
+  // 0 — primary (Gold)
   {
     bg: "bg-primary",
     text: "text-primary",
-    accentText: "text-quaternary",
-    accentBg: "bg-quaternary",
+    accentText: "text-secondary",
+    accentBg: "bg-secondary",
     fg: "text-primary-foreground",
     border: "border-primary/20",
     lightBg: "bg-primary/20",
@@ -15,6 +17,7 @@ export const BRAND_THEMES = [
     navHover: "hover:bg-primary/20 hover:text-primary focus:bg-primary/20 focus:text-primary",
     navMobileActive: "text-primary bg-primary/5 font-bold",
   },
+  // 1 — secondary (Navy)
   {
     bg: "bg-secondary",
     text: "text-secondary",
@@ -27,23 +30,25 @@ export const BRAND_THEMES = [
     navHover: "hover:bg-secondary/20 hover:text-secondary focus:bg-secondary/20 focus:text-secondary",
     navMobileActive: "text-secondary bg-secondary/5 font-bold",
   },
+  // 2 — tertiary (Blue)
   {
-    bg: "bg-senary",
-    text: "text-secondary",
-    accentText: "text-secondary",
-    accentBg: "bg-secondary",
+    bg: "bg-tertiary",
+    text: "text-tertiary",
+    accentText: "text-primary",
+    accentBg: "bg-primary",
     fg: "text-tertiary-foreground",
-    border: "border-senary/20",
-    lightBg: "bg-senary/20",
-    navActive: "bg-senary text-senary-foreground shadow-sm",
-    navHover: "hover:bg-senary/20 hover:text-senary focus:bg-senary/20 focus:text-senary",
-    navMobileActive: "text-senary bg-senary/5 font-bold",
+    border: "border-tertiary/20",
+    lightBg: "bg-tertiary/20",
+    navActive: "bg-tertiary text-tertiary-foreground shadow-sm",
+    navHover: "hover:bg-tertiary/20 hover:text-tertiary focus:bg-tertiary/20 focus:text-tertiary",
+    navMobileActive: "text-tertiary bg-tertiary/5 font-bold",
   },
+  // 3 — quaternary (Red)
   {
     bg: "bg-quaternary",
     text: "text-quaternary",
-    accentText: "text-quinary",
-    accentBg: "bg-quinary",
+    accentText: "text-primary",
+    accentBg: "bg-primary",
     fg: "text-quaternary-foreground",
     border: "border-quaternary/20",
     lightBg: "bg-quaternary/20",
@@ -51,11 +56,12 @@ export const BRAND_THEMES = [
     navHover: "hover:bg-quaternary/20 hover:text-quaternary focus:bg-quaternary/20 focus:text-quaternary",
     navMobileActive: "text-quaternary bg-quaternary/5 font-bold",
   },
+  // 4 — quinary (Green)
   {
     bg: "bg-quinary",
     text: "text-quinary",
-    accentText: "text-quaternary",
-    accentBg: "bg-quaternary",
+    accentText: "text-secondary",
+    accentBg: "bg-secondary",
     fg: "text-quinary-foreground",
     border: "border-quinary/20",
     lightBg: "bg-quinary/20",
@@ -63,16 +69,5 @@ export const BRAND_THEMES = [
     navHover: "hover:bg-quinary/20 hover:text-quinary focus:bg-quinary/20 focus:text-quinary",
     navMobileActive: "text-quinary bg-quinary/5 font-bold",
   },
-  {
-    bg: "bg-senary",
-    text: "text-senary",
-    accentText: "text-tertiary",
-    accentBg: "bg-tertiary",
-    fg: "text-senary-foreground",
-    border: "border-senary/20",
-    lightBg: "bg-senary/20",
-    navActive: "bg-senary text-senary-foreground shadow-sm",
-    navHover: "hover:bg-senary/20 hover:text-senary focus:bg-senary/20 focus:text-senary",
-    navMobileActive: "text-senary bg-senary/5 font-bold",
-  },
 ];
+
