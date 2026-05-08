@@ -1,5 +1,6 @@
 import { MessageSquareHeart } from "lucide-react";
 import { Logomarcalarge } from "@/assets/icons/logos";
+import logoblanco from '@/assets/images/logos/logoblanco.png'
 import imgFondo from "@/assets/images/fondos/Guasdualito.jpg";
 
 /**
@@ -13,9 +14,9 @@ export const FOOTER_CONFIG = {
     overlayClass: "opacity-95",
   },
   brand: {
-    useLogoComponent: true,
+    useLogoComponent: false,
     logoComponent: Logomarcalarge,
-    logoImage: null,
+    logoImage: logoblanco,
     logoText: "Venezuela",
     logoSubtext: "abierta al futuro",
     title: null,

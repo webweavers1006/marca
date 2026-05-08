@@ -50,7 +50,7 @@ export function Footer() {
                 alt={brand.logoText}
                 width={800}
                 height={200}
-                className="w-full max-w-[16rem] sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl h-auto object-contain drop-shadow-md"
+                className="w-full max-w-[10rem] sm:max-w-sm md:max-w-2xl lg:max-w-sm xl:max-w-sm h-auto object-contain drop-shadow-md"
               />
             ) : null}
           </div>
