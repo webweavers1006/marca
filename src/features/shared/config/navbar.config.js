@@ -27,7 +27,7 @@ export const NAVBAR_CONFIG = {
   },
   cta: {
     label: "Postula ahora",
-    href: "/concurso",
+    href: "https://concurso.marcapais.ve/concurso",
   },
   hamburger: {
     openLabel: "Abrir menú",
