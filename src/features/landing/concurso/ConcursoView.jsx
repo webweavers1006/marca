@@ -78,7 +78,7 @@ export function ConcursoView() {
           </div>
 
           {/* Right panel: Prize Information */}
-          <ConcursoPremio premio={CONCURSO_CONTENT.premio} theme={MODULE_THEME} />
+          {/* <ConcursoPremio premio={CONCURSO_CONTENT.premio} theme={MODULE_THEME} /> */}
         </div>
 
         {/* ── ROW 2: 3-column image strip ── */}
