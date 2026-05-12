@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useActiveLink } from "@/features/shared/hooks/use-active-link";
+import { useActiveTheme } from "@/components/shared/providers/active-theme-provider";
+import { useAppNavigation } from "@/features/shared/hooks/use-app-navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MAIN_NAV_LINKS } from "@/features/shared/config/routes.config";
@@ -18,7 +19,8 @@ import { cn } from "@/lib/utils";
  * @param {Function} props.onClose - Callback to close the menu.
  */
 export function MobileMenu({ isOpen, onClose }) {
-  const { isLinkActive, setCurrentHash } = useActiveLink();
+  const { activeSection, activeTheme } = useActiveTheme();
+  const { navigateToSection } = useAppNavigation();
 
   return (
     <AnimatePresence>
@@ -32,22 +34,21 @@ export function MobileMenu({ isOpen, onClose }) {
         >
           <ul className="flex flex-col p-6 gap-4" role="list">
             {MAIN_NAV_LINKS.map((link) => {
-              const isActive = isLinkActive(link.href);
+              const isActive = activeSection === link.href;
 
               return (
                 <li key={link.href}>
                   <Link
                     href={link.href}
                     onClick={() => {
-                      const hash = link.href.includes("#") ? `#${link.href.split("#")[1]}` : "";
-                      setCurrentHash(hash);
+                      navigateToSection(link.href);
                       onClose();
                     }}
                     className={cn(
-                      "block text-lg font-medium p-2 rounded-lg transition-colors",
+                      "block text-lg font-medium p-2 rounded-lg transition-colors focus:outline-none",
                       isActive 
-                        ? "text-secondary bg-secondary/5 font-bold" 
-                        : "text-muted-foreground hover:text-foreground"
+                        ? link.theme?.navMobileActive
+                        : `text-muted-foreground ${link.theme?.navHover}`
                     )}
                   >
                     {link.label}
@@ -59,7 +60,12 @@ export function MobileMenu({ isOpen, onClose }) {
               <Button
                 render={<Link href={NAVBAR_CONFIG.cta.href} onClick={onClose} />}
                 nativeButton={false}
-                className="w-full bg-secondary text-primary-foreground py-6 rounded-xl font-semibold text-lg hover:bg-secondary/90 transition-colors"
+                variant="ghost"
+                className={cn(
+                  "w-full py-6 rounded-xl font-semibold text-lg transition-colors",
+                  activeTheme?.navActive,
+                  activeTheme?.navHover
+                )}
               >
                 {NAVBAR_CONFIG.cta.label}
               </Button>

@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
@@ -19,27 +18,46 @@
   --color-muted-inverse: #ffffffb3;
   /* Blanco suave para textos secundarios en fondos oscuros */
 
-  --color-primary: #e15616;
-  /* Accent Gold */
+  --color-primary: #F2DE01;
+  /* Brand Yellow */
   --color-primary-foreground: #1D1D1F;
-  /* Ink on Gold */
 
-  --color-secondary: #e15616;
-  /* Cream Dark */
-  --color-secondary-foreground: #1D1D1F;
+  --color-secondary: #00838F;
+  /* Brand Teal */
+  --color-secondary-foreground: #FFFFFF;
 
-  --color-muted: #e15616;
-  /* Same as secondary for subtle areas */
+  --color-muted: #00838F;
+  /* Brand Teal (subtle) */
   --color-muted-foreground: #6E6E73;
-  /* Ink Muted */
 
-  --color-accent: #e15616;
-  /* Used for hover states in ghost buttons */
-  --color-accent-foreground: #1D1D1F;
+  --color-accent: #00838F;
+  /* Brand Teal */
+  --color-accent-foreground: #FFFFFF;
 
   --color-border: #E8E4DC;
   --color-input: #E8E4DC;
-  --color-ring: #e15616;
+  --color-ring: #F2DE01;
+
+  --color-tertiary: #cd3d9e;
+  /* Brand Magenta */
+  --color-tertiary-foreground: #FFFFFF;
+
+  --color-quaternary: #3e1055;
+  /* Brand Purple */
+  --color-quaternary-foreground: #FFFFFF;
+
+  --color-quinary: #8DC63F;
+  /* Brand Green */
+  --color-quinary-foreground: #1D1D1F;
+
+  --color-senary: #F7941D;
+  /* Brand Orange */
+  --color-senary-foreground: #1D1D1F;
+
+  /* ─── Brand Gradients ─── */
+  --gradient-brand: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-tertiary));
+  --gradient-warm: linear-gradient(135deg, var(--color-primary), var(--color-senary), var(--color-tertiary));
+  --gradient-cool: linear-gradient(135deg, var(--color-secondary), var(--color-quaternary), var(--color-quinary));
 
   /* Radius mapping */
   --radius-sm: 4px;
@@ -53,6 +71,11 @@
   --color-social-twitter: #1DA1F2;
   /* Breakpoints */
   --breakpoint-nav: 1280px;
+
+  /* Font Families */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-made-tommy), ui-sans-serif, system-ui, sans-serif;
+  --font-outline: var(--font-made-tommy-outline), ui-sans-serif, system-ui, sans-serif;
 }
 
 /* ─── Base Styles (Wrapped in layer to allow utility overrides) ── */
@@ -67,8 +90,20 @@
   }
 
   body {
-    @apply font-sans bg-background text-foreground;
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    @apply bg-background text-foreground;
     line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-made-tommy), ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
   }
 
   a {
@@ -93,7 +128,6 @@
   }
 }
 
-/* ─── Layout Utilities ────────────────────────────────────────── */
 @layer utilities {
   .section-inner {
     max-width: 1200px;
@@ -126,6 +160,64 @@
   }
 }
 
+/* ─── Hero Circle Float Animations ───────────────────────── */
+@keyframes hero-float-slow {
+
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+
+  50% {
+    transform: translateY(-18px) scale(1.02);
+  }
+}
+
+@keyframes hero-float-medium {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(3deg);
+  }
+}
+
+@keyframes hero-float-fast {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  33% {
+    transform: translateY(-8px);
+  }
+
+  66% {
+    transform: translateY(4px);
+  }
+}
+
+@layer utilities {
+  .animate-hero-float-slow {
+    animation: hero-float-slow 8s ease-in-out infinite;
+  }
+
+  .animate-hero-float-medium {
+    animation: hero-float-medium 6s ease-in-out infinite;
+    animation-delay: 1s;
+  }
+
+  .animate-hero-float-fast {
+    animation: hero-float-fast 4s ease-in-out infinite;
+    animation-delay: 0.5s;
+  }
+}
+
+/* ─── Navbar scroll sticky ─────────────────────────────── */
 .nav-sticky-logic {
   animation: nav-scroll-effect linear both;
   animation-timeline: scroll();

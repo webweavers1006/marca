@@ -12,24 +12,27 @@ import { sectionItemVariants } from "@/features/shared/config/animations.config"
  * @param {string} props.label - The text to display.
  * @param {'default' | 'inverse' | 'hero'} [props.variant] - Visual style variant.
  * @param {string} [props.className] - Additional classes for the container.
- * @param {boolean} [props.animate=false] - Whether to wrap in a motion.div.
  * @param {object} [props.variants] - Motion variants to use if animate is true.
+ * @param {object} [props.theme] - Brand theme object (e.g. BRAND_THEMES[1]). Overrides variant if provided.
  */
 export function SectionLabel({ 
   label, 
   variant = SECTION_LABEL_CONFIG.defaults.variant, 
   className = "", 
   animate = false,
-  variants = sectionItemVariants
+  variants = sectionItemVariants,
+  theme
 }) {
   const containerClasses = `flex items-center gap-3 ${className}`;
   
   const currentStyle = SECTION_LABEL_CONFIG.variants[variant] || SECTION_LABEL_CONFIG.variants.default;
+  const lineClass = theme?.bg || currentStyle.line;
+  const textClass = theme ? `${theme.text} font-bold` : currentStyle.text;
 
   const Content = (
     <>
-      <span className={`block h-px w-8 ${currentStyle.line}`} aria-hidden="true" />
-      <span className={`${SECTION_LABEL_CONFIG.shared.text} ${currentStyle.text}`}>
+      <span className={`block h-px w-8 ${lineClass} opacity-80`} aria-hidden="true" />
+      <span className={`${SECTION_LABEL_CONFIG.shared.text} ${textClass}`}>
         {label}
       </span>
     </>

@@ -8,11 +8,12 @@ import {
 const ICON_MAP = { Megaphone, Send, SlidersHorizontal, Users, Layers, Flag };
 
 /**
- * MilestoneCard — Compact card with click-to-expand description.
+ * MilestoneCard — Compact organic card with click-to-expand description.
+ * Modified for the 'Construcción Identitaria' editorial aesthetic (no boxes or shadows).
  *
- * @param {{ milestone: object, side: 'left'|'right', isExpanded: boolean, onToggle: () => void }} props
+ * @param {{ milestone: object, side: 'left'|'right', isExpanded: boolean, onToggle: () => void, theme: object }} props
  */
-export function MilestoneCard({ milestone, side, isExpanded, onToggle }) {
+export function MilestoneCard({ milestone, side, isExpanded, onToggle, theme }) {
   const Icon = ICON_MAP[milestone.iconName];
   const isLeft = side === "left";
 
@@ -22,25 +23,16 @@ export function MilestoneCard({ milestone, side, isExpanded, onToggle }) {
       onClick={onToggle}
       aria-expanded={isExpanded}
       aria-controls={`milestone-desc-${milestone.id}`}
-      className={[
-        "group w-full text-left rounded-xl border transition-all duration-300 overflow-hidden cursor-pointer",
-        "bg-white/8 backdrop-blur-sm border-white/12 shadow-sm",
-        "hover:border-primary/50 hover:bg-white/12 hover:shadow-[0_8px_32px_-6px_rgba(149,120,211,0.35)]",
-        isExpanded
-          ? "border-primary/55 bg-white/14 shadow-[0_8px_32px_-6px_rgba(149,120,211,0.30)]"
-          : milestone.activo
-            ? "border-primary/40 shadow-[0_4px_20px_-4px_rgba(149,120,211,0.25)]"
-            : "",
-      ].join(" ")}
+      className="group w-full text-left transition-all duration-300 overflow-hidden cursor-pointer"
     >
       {/* ── Collapsed header ── */}
-      <div className={["flex items-center gap-3 p-3.5", isLeft ? "flex-row-reverse" : "flex-row"].join(" ")}>
+      <div className={["flex items-center gap-3 p-2", isLeft ? "flex-row-reverse" : "flex-row"].join(" ")}>
         {/* Icon */}
         <div className={[
-          "flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-300",
+          "flex-shrink-0 w-9 h-9 flex items-center justify-center transition-colors duration-300 rounded-full",
           isExpanded || milestone.activo
-            ? "bg-primary text-foreground-inverse"
-            : "bg-white/10 text-primary group-hover:bg-white/16",
+            ? `${theme?.accentBg || "bg-foreground-inverse"} text-foreground` // Filled background with contrast
+            : `bg-transparent border border-foreground-inverse/30 text-foreground-inverse group-hover:border-foreground-inverse/60`, // Hollow background
         ].join(" ")}>
           {Icon && <Icon size={16} aria-hidden="true" />}
         </div>
@@ -48,14 +40,14 @@ export function MilestoneCard({ milestone, side, isExpanded, onToggle }) {
         {/* Text */}
         <div className={["min-w-0 flex-1", isLeft ? "text-right" : "text-left"].join(" ")}>
           <p className={[
-            "text-[10px] font-bold tracking-[0.15em] uppercase leading-none mb-1",
-            milestone.activo || isExpanded ? "text-primary" : "text-white/40",
+            "text-[10px] font-bold tracking-[0.15em] uppercase leading-none mb-1 transition-colors duration-300",
+            milestone.activo || isExpanded ? (theme?.accentText || "text-foreground-inverse") : "text-foreground-inverse/60",
           ].join(" ")}>
             {milestone.fecha}
           </p>
           <p className={[
-            "text-xs font-semibold leading-snug",
-            milestone.activo || isExpanded ? "text-foreground-inverse" : "text-white/70",
+            "text-sm font-semibold leading-snug transition-colors duration-300",
+            milestone.activo || isExpanded ? "text-foreground-inverse" : "text-foreground-inverse/80",
           ].join(" ")}>
             {milestone.evento}
           </p>
@@ -65,9 +57,9 @@ export function MilestoneCard({ milestone, side, isExpanded, onToggle }) {
         <motion.div
           animate={{ rotate: isExpanded ? 180 : 0 }}
           transition={{ duration: 0.25, ease: "easeInOut" }}
-          className="flex-shrink-0 text-white/30 group-hover:text-primary/70"
+          className={`flex-shrink-0 ${isExpanded ? theme?.accentText : "text-foreground-inverse/40"}`}
         >
-          <ChevronDown size={14} aria-hidden="true" />
+          <ChevronDown size={16} aria-hidden="true" />
         </motion.div>
       </div>
 
@@ -84,7 +76,7 @@ export function MilestoneCard({ milestone, side, isExpanded, onToggle }) {
             className="overflow-hidden"
           >
             <p className={[
-              "text-xs text-white/55 leading-relaxed px-3.5 pb-3.5",
+              "text-sm text-foreground-inverse/70 leading-relaxed px-3 pb-3 pt-1",
               isLeft ? "text-right" : "text-left",
             ].join(" ")}>
               {milestone.descripcion}

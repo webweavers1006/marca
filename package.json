@@ -3,18 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3001",
+    "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start --port 3001",
     "lint": "eslint",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:reset": "prisma migrate reset --force",
     "db:studio": "prisma studio",
     "db:push": "prisma db push",
     "icons:build": "node scripts/build-icons.mjs --type=icon",
     "logos:build": "node scripts/build-icons.mjs --type=logo",
     "icons:all": "npm run icons:build && npm run logos:build",
-    "app:start": "npm install && npm run db:migrate -- --name init && npm run db:generate && npm run icons:all && echo \"\\n✅ Setup complete!\\n🚀 Run 'npm run dev' to start developing\\n📦 Run 'npm run build' for production\\n\""
+    "app:start": "npm install && npm run db:migrate && npm run db:generate && npm run icons:all && echo \"\\n✅ Setup complete!\\n🚀 Run 'npm run dev' to start developing\\n📦 Run 'npm run build' for production\\n\""
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",

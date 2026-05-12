@@ -6,43 +6,53 @@ import { HERO_CONFIG } from "./config/hero.config";
 import { heroContainerVariants } from "./config/hero.animations.config";
 import { HeroBackground } from "./components/HeroBackground";
 import { HeroVideoBackground } from "./components/HeroVideoBackground";
+import { HeroImageBackground } from "./components/HeroImageBackground";
 import { HeroLabel } from "./components/HeroLabel";
 import { HeroHeadline } from "./components/HeroHeadline";
 import { HeroSubtitle } from "./components/HeroSubtitle";
 import { HeroCta } from "./components/HeroCta";
 import { HeroScrollIndicator } from "./components/HeroScrollIndicator";
 
+
+import { useSectionObserver } from "@/features/shared/hooks/use-section-observer";
+
 /**
  * HeroView — orchestrates all Hero sub-components.
- * Reads content from LANDING_CONTENT.hero (strings) and HERO_CONFIG (layout/behavior).
- * No hardcoded text or layout values live here.
+ * Design follows the Construcción Identitaria brand art:
+ * bold circles, 6-color palette, dynamic visual energy.
  */
 export function HeroView() {
   const { label, titleLine1, titleLine2, subtitle, cta, ctaSecondary } =
     HERO_CONTENT;
-  const { ctaHref, ctaSecondaryHref, accentChar, video } = HERO_CONFIG;
+  const { ctaHref, ctaSecondaryHref, video, image } = HERO_CONFIG;
+
+  const sectionRef = useSectionObserver("/");
 
   return (
     <section
       id="hero"
-      aria-labelledby="hero-headline"
-      className="relative w-full overflow-hidden min-h-svh"
+      ref={sectionRef}
+      className="relative w-full overflow-hidden min-h-svh bg-background"
     >
-      {/* Non-blocking background video (loads after initial paint) */}
-      {video.enabled && (
+      {/* Background: image takes priority when enabled, fallback to video */}
+      {image?.enabled && (
+        <HeroImageBackground src={image.src} showOverlay={image.showOverlay} />
+      )}
+      {video.enabled && !image?.enabled && (
         <HeroVideoBackground src={video.src} showOverlay={video.showOverlay} />
       )}
 
-      {/* Decorative ambient layer: glow + ghost char */}
-      <HeroBackground accentChar={accentChar} />
+      {/* Decorative brand circles + color band */}
+      <HeroBackground />
 
       {/* Main content — staggered entrance */}
-      <div className="section-inner relative z-10 flex flex-col justify-center min-h-svh py-24 md:py-32">
+      <div className="section-inner relative z-10 flex items-center min-h-svh py-24 md:py-32">
         <motion.div
           variants={heroContainerVariants}
           initial="hidden"
           animate="visible"
-          className="max-w-3xl"
+          transition={{ delayChildren: 0.1 }}
+          className="max-w-2xl"
         >
           <HeroLabel label={label} />
           <HeroHeadline
@@ -65,4 +75,3 @@ export function HeroView() {
     </section>
   );
 }
-

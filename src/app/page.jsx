@@ -14,8 +14,8 @@ export default function HomePage() {
     <>
       <HeroView />
       <ConcursoView />
-      <FasesView />
       <CronogramaView />
+      <FasesView />
       <JuradoView />
       {/*<ImpactoView /> */}
     </>

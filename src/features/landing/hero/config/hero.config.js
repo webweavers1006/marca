@@ -1,3 +1,5 @@
+import fondoImage from "@/assets/images/fondos/fondo.png";
+
 /**
  * Hero layout and behavior configuration.
  * Text content lives in landing-content.config.js (LANDING_CONTENT.hero).
@@ -25,6 +27,17 @@ export const HERO_CONFIG = {
   video: {
     enabled: true,
     src: "/videofondo.mp4",
+    showOverlay: true,
+  },
+
+  /**
+   * Background image configuration (used when video.enabled is false).
+   * The image asset is statically imported in HeroImageBackground.jsx
+   * for Next.js automatic optimization (WebP, sizing, blur placeholder).
+   */
+  image: {
+    enabled: false,
+    src: fondoImage,
     showOverlay: true,
   },
 };

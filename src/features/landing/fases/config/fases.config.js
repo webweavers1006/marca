@@ -1,34 +1,40 @@
 /**
  * Fases section configuration.
- * Controls video, active-cycle display, and lazy-load behavior.
+ * Controls background, decorative elements, and cycle display settings.
  * All UI decisions live here — components are data-driven.
  */
 
-/**
- * Background / showcase video shown above the cycles list.
- * src: relative to /public
- * lazyOffset: IntersectionObserver rootMargin — how early to start loading
- */
-export const FASES_VIDEO_CONFIG = {
-  enabled: true,
-  src: "/videoseccion.mp4",
-  /** Start loading when 400px away from viewport */
-  lazyOffset: "400px",
-  /** Dark scrim over video to ensure content readability */
-  showOverlay: true,
-  /** Accessible label for screen readers */
-  ariaLabel: "Video ilustrativo del sistema de selección y fases del concurso",
+export const FASES_CONFIG = {
+  /**
+   * Background configuration for the entire section.
+   * Can use video or static imagery.
+   */
+  background: {
+    enabled: true,
+    type: "video", // Using video as requested for this module
+    src: "/videoseccion.mp4",
+    lazyOffset: "400px",
+    // The opacity of the brand color overlay over the video
+    overlayClass: "opacity-95",
+    ariaLabel: "Video ilustrativo del sistema de selección y fases del concurso",
+  },
+  /**
+   * Decorative ambient elements (floating circles and characters)
+   */
+  decorative: {
+    accentChar: "VE",
+    circles: [
+      { className: "absolute -top-40 right-[15%] w-[500px] h-[500px] rounded-full bg-foreground-inverse/5 pointer-events-none z-0" },
+      { className: "absolute bottom-1/4 -left-20 w-[350px] h-[350px] rounded-full bg-foreground-inverse/5 pointer-events-none z-0" }
+    ]
+  }
 };
 
 /**
  * Active-cycle card display settings.
- * icon: lucide-react icon name to import dynamically.
- * badgeLabel: small pill text shown above the cycle title.
  */
 export const ACTIVE_CYCLE_CONFIG = {
-  /** lucide icon displayed in the active-cycle focal card */
   iconName: "Layers",
-  /** Pill label */
   badgeLabel: "En proceso",
 };
 
@@ -36,6 +42,5 @@ export const ACTIVE_CYCLE_CONFIG = {
  * Configuration for the dynamic rotation of active cycles.
  */
 export const ACTIVE_CYCLE_ROTATION_CONFIG = {
-  /** How many milliseconds to stay on each phase */
   intervalMs: 5000,
 };
