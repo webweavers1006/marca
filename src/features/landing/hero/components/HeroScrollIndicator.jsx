@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { scrollIndicatorVariants } from "../config/hero.animations.config";
+import { HERO_CONTENT } from "../config/hero.content.config";
 
 /**
  * HeroScrollIndicator — animated downward chevron shown at the hero bottom.
@@ -15,7 +16,7 @@ export function HeroScrollIndicator() {
       aria-hidden="true"
     >
       <span className="text-[10px] tracking-[0.2em] uppercase text-foreground-inverse font-medium">
-        Scroll
+        {HERO_CONTENT.scrollIndicator}
       </span>
       <motion.div
         variants={scrollIndicatorVariants}

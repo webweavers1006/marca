@@ -4,21 +4,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FASES_CONTENT, SELECTION_CYCLES } from "@/features/landing/fases/config/fases.content.config";
 import { FASES_CONFIG } from "@/features/landing/fases/config/fases.config";
 import { BRAND_THEMES } from "@/features/shared/config/theme.config";
-import { FasesHeader } from "@/features/landing/fases/components/FasesHeader";
-import { FasesVideoBackground } from "@/features/landing/fases/components/FasesVideoBackground";
+import { sectionContainerVariants } from "@/features/shared/config/animations.config";
 import { FasesActiveCycle } from "@/features/landing/fases/components/FasesActiveCycle";
+import { SectionHeader } from "@/components/shared/SectionHeader";
 import { FasesCycleList } from "@/features/landing/fases/components/FasesCycleList";
 import { FasesCarouselControls } from "@/features/landing/fases/components/FasesCarouselControls";
 import { useFasesCarousel } from "@/features/landing/fases/hooks/useFasesCarousel";
 import { useSectionObserver } from "@/features/shared/hooks/use-section-observer";
 import { AccentCharacter } from "@/components/shared/AccentCharacter";
+import { DecorativeCircles } from "@/components/shared/DecorativeCircles";
+import { SectionBackground } from "@/components/shared/SectionBackground";
 
 /** Fases module brand color — quaternary (purple) is fixed for this section */
 const MODULE_THEME = BRAND_THEMES[3];
 
 /**
  * FasesView — "Sistema de Selección y Fases" section.
- * Config-driven organic layout matching the Constuccion Identitaria brand guidelines.
+ * Config-driven organic layout matching the Construcción Identitaria brand guidelines.
  */
 export function FasesView() {
   const { label, sectionId, titulo, tituloHighlight } = FASES_CONTENT;
@@ -27,8 +29,18 @@ export function FasesView() {
 
   return (
     <section id={sectionId} ref={sectionRef} aria-labelledby="fases-heading" className={`relative overflow-hidden ${MODULE_THEME.bg} text-foreground-inverse`}>
-      {/* ── Background layer ── */}
-      {FASES_CONFIG.background.enabled && <FasesVideoBackground theme={MODULE_THEME} />}
+      {/* Background layer — video with lazy loading */}
+      <SectionBackground
+        type="video"
+        src={FASES_CONFIG.background.src}
+        themeBg={MODULE_THEME.bg}
+        overlayClass={FASES_CONFIG.background.overlayClass}
+        videoProps={{
+          lazyOffset: FASES_CONFIG.background.lazyOffset,
+          ariaLabel: FASES_CONFIG.background.ariaLabel,
+        }}
+        enabled={FASES_CONFIG.background.enabled}
+      />
 
       {/* Decorative Brand Accent (Ghost text watermark) */}
       <AccentCharacter
@@ -36,13 +48,17 @@ export function FasesView() {
         className="bottom-0 -left-[15%] translate-x-[15%] opacity-10"
       />
 
-      {/* Decorative circles (ambient identity) at section level */}
-      {FASES_CONFIG.decorative.circles.map((circle, idx) => (
-        <div key={idx} className={circle.className} aria-hidden="true" />
-      ))}
+      {/* Decorative circles */}
+      <DecorativeCircles circles={FASES_CONFIG.decorative.circles} />
 
-      {/* ── Content (above background) ── */}
-      <div className="relative z-10">
+      {/* Content (above background) */}
+      <motion.div
+        variants={sectionContainerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        className="relative z-10"
+      >
         <div className="grid grid-cols-1 lg:grid-cols-[55fr_45fr]">
 
           {/* Left panel: Active Showcase */}
@@ -73,11 +89,14 @@ export function FasesView() {
           <div className="relative p-6 md:p-8 lg:p-10 xl:p-12 lg:pl-6 xl:pl-8 flex flex-col justify-start bg-foreground-inverse/5">
             {/* Header */}
             <div className="mb-6">
-              <FasesHeader
+              <SectionHeader
                 label={label}
-                titulo={titulo}
-                tituloHighlight={tituloHighlight}
+                title={titulo}
+                highlights={tituloHighlight ? [tituloHighlight] : []}
                 theme={MODULE_THEME}
+                variant="dark"
+                animate={false}
+                id="fases-heading"
               />
             </div>
 
@@ -96,7 +115,7 @@ export function FasesView() {
           </div>
 
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

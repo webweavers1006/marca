@@ -4,10 +4,11 @@
 export const JURADO_CONTENT = {
   label: "El Jurado",
   sectionId: "jurado",
-  titulo: "Los rostros",
+  titulo: "Los rostros del proceso",
   tituloHighlight: "del proceso",
   subtitulo:
     "Panel especializado y veedores independientes encargados de garantizar la transparencia y calidad técnica de la nueva identidad visual.",
+  backgroundAlt: "Fondo Jurado",
 };
 
 export const JURY_GROUPS = [

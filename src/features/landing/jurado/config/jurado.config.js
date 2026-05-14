@@ -5,6 +5,23 @@ import imgFondo from "@/assets/images/fondos/MunicipioTovar.jpg";
  */
 export const JURADO_CONFIG = {
   /**
+   * Visual mode: "dark" = colored bg + inverse text. "light" = cream bg + dark text.
+   */
+  variant: "dark",
+
+  /**
+   * Layout orientation for the header and content panels.
+   * - "right": Header on the right, content on the left (editorial).
+   */
+  layout: "left",
+
+  /**
+   * Text alignment for the header (label + title).
+   * - "left": left-aligned (editorial layout).
+   */
+  headerAlign: "left",
+
+  /**
    * Background image configuration for the entire section.
    */
   background: {

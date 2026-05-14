@@ -36,6 +36,16 @@ export const FASES_CONFIG = {
 export const ACTIVE_CYCLE_CONFIG = {
   iconName: "Layers",
   badgeLabel: "En proceso",
+  phaseLabel: "Fase de Selección",
+  cycleLabel: "Ciclo",
+};
+
+/**
+ * Carousel controls aria labels.
+ */
+export const CAROUSEL_CONTROLS_CONFIG = {
+  prevLabel: "Fase anterior",
+  nextLabel: "Siguiente fase",
 };
 
 /**

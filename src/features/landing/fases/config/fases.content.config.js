@@ -12,6 +12,7 @@ export const FASES_CONTENT = {
   titulo: "De miles a una propuesta: Un proceso en 6 Ciclos",
   tituloHighlight: "6 Ciclos",
   sidebarLabel: "Índice de procesos",
+  sidebarCyclePrefix: "Nº",
 };
 
 export const SELECTION_CYCLES = [

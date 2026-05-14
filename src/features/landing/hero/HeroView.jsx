@@ -5,6 +5,7 @@ import { HERO_CONTENT } from "./config/hero.content.config";
 import { HERO_CONFIG } from "./config/hero.config";
 import { heroContainerVariants } from "./config/hero.animations.config";
 import { HeroBackground } from "./components/HeroBackground";
+import { HeroColorSweep } from "./components/HeroColorSweep";
 import { HeroVideoBackground } from "./components/HeroVideoBackground";
 import { HeroImageBackground } from "./components/HeroImageBackground";
 import { HeroLabel } from "./components/HeroLabel";
@@ -12,8 +13,7 @@ import { HeroHeadline } from "./components/HeroHeadline";
 import { HeroSubtitle } from "./components/HeroSubtitle";
 import { HeroCta } from "./components/HeroCta";
 import { HeroScrollIndicator } from "./components/HeroScrollIndicator";
-
-
+import { AccentCharacter } from "@/components/shared/AccentCharacter";
 import { useSectionObserver } from "@/features/shared/hooks/use-section-observer";
 
 /**
@@ -24,7 +24,7 @@ import { useSectionObserver } from "@/features/shared/hooks/use-section-observer
 export function HeroView() {
   const { label, titleLine1, titleLine2, subtitle, cta, ctaSecondary } =
     HERO_CONTENT;
-  const { ctaHref, ctaSecondaryHref, video, image } = HERO_CONFIG;
+  const { ctaHref, ctaSecondaryHref, video, image, accentChar } = HERO_CONFIG;
 
   const sectionRef = useSectionObserver("/");
 
@@ -33,7 +33,11 @@ export function HeroView() {
       id="hero"
       ref={sectionRef}
       className="relative w-full overflow-hidden min-h-svh bg-background"
+      aria-labelledby="hero-headline"
     >
+      {/* Intro color sweep animation */}
+      <HeroColorSweep />
+
       {/* Background: image takes priority when enabled, fallback to video */}
       {image?.enabled && (
         <HeroImageBackground src={image.src} showOverlay={image.showOverlay} />
@@ -44,6 +48,12 @@ export function HeroView() {
 
       {/* Decorative brand circles + color band */}
       <HeroBackground />
+
+      {/* Decorative Brand Accent (Ghost text watermark) */}
+      <AccentCharacter
+        char={accentChar}
+        className="top-[20%] right-0 translate-x-[20%] opacity-10"
+      />
 
       {/* Main content — staggered entrance */}
       <div className="section-inner relative z-10 flex items-center min-h-svh py-24 md:py-32">

@@ -5,6 +5,7 @@ import {
   sectionContainerVariants,
   sectionItemVariants,
 } from "@/features/shared/config/animations.config";
+import { FASES_CONTENT } from "@/features/landing/fases/config/fases.content.config";
 
 /**
  * FasesCycleList — Vertical index list for the editorial layout.
@@ -14,6 +15,7 @@ import {
  */
 export function FasesCycleList({ cycles, currentCycleId, onSelect, theme }) {
   const accentClass = theme?.accentText || "text-foreground-inverse";
+  const cyclePrefix = FASES_CONTENT.sidebarCyclePrefix || "Nº";
 
   return (
     <motion.div
@@ -61,7 +63,7 @@ export function FasesCycleList({ cycles, currentCycleId, onSelect, theme }) {
               transition-colors
             `}>
               <span className={`text-[9px] font-black tracking-widest ${isActive ? accentClass : "text-foreground-inverse/50"}`}>
-                Nº
+                {cyclePrefix}
               </span>
               <span className={`text-base font-black leading-none ${isActive ? "text-foreground-inverse" : "text-foreground-inverse/50"}`}>
                 {cycle.numero}

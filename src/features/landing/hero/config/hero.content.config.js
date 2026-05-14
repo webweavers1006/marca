@@ -12,4 +12,5 @@ export const HERO_CONTENT = {
     "Participa en la Construcción Colectiva de la Marca País. Un proceso abierto al talento nacional.",
   cta: "Postula tu propuesta",
   ctaSecondary: "Conoce las fases",
+  scrollIndicator: "Scroll",
 };

@@ -1,12 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { JURADO_CONTENT } from "./config/jurado.content.config";
-import { JURADO_CONFIG } from "./config/jurado.config";
-import { JuradoGroupList } from "./components/JuradoGroupList";
+import { COUNTRY_BRAND_CONTENT } from "./config/country-brand.content.config";
+import { COUNTRY_BRAND_CONFIG } from "./config/country-brand.config";
 import { SectionHeader } from "@/components/shared/SectionHeader";
-import { SectionLayout } from "@/components/shared/SectionLayout";
+import { SectionDescription } from "@/components/shared/SectionDescription";
 import { AccentCharacter } from "@/components/shared/AccentCharacter";
+import { SectionLayout } from "@/components/shared/SectionLayout";
 import { DecorativeCircles } from "@/components/shared/DecorativeCircles";
 import { SectionBackground } from "@/components/shared/SectionBackground";
 import { Container } from "@/components/shared/Container";
@@ -14,37 +14,39 @@ import { BRAND_THEMES } from "@/features/shared/config/theme.config";
 import { sectionContainerVariants } from "@/features/shared/config/animations.config";
 import { useSectionObserver } from "@/features/shared/hooks/use-section-observer";
 
+/** CountryBrand module — Green/Quinary for accents */
 const MODULE_THEME = BRAND_THEMES[4];
 
 /**
- * JuradoView — "Los Rostros del Proceso" section.
- * Dark variant, Green theme. Header right, content left.
+ * CountryBrandView — "Marca País Venezuela" section.
+ * Light variant, cream background, dark text. Header left, content right.
  */
-export function JuradoView() {
-  const { label, sectionId, titulo, tituloHighlight, subtitulo, backgroundAlt } = JURADO_CONTENT;
-  const { layout, headerAlign, decorative, background, variant } = JURADO_CONFIG;
+export function CountryBrandView() {
+  const { label, sectionId, titulo, tituloHighlights, descripcion, backgroundAlt } =
+    COUNTRY_BRAND_CONTENT;
+  const { layout, decorative, headerAlign, background, variant } = COUNTRY_BRAND_CONFIG;
   const sectionRef = useSectionObserver("/#" + sectionId, { threshold: 0.3 });
 
   return (
     <section
       id={sectionId}
       ref={sectionRef}
-      className={`${!background.enabled ? MODULE_THEME.bg : "bg-background"} relative overflow-hidden text-foreground-inverse`}
-      aria-labelledby="jurado-heading"
+      aria-labelledby="marca-pais-heading"
+      className="relative overflow-hidden bg-background text-foreground"
     >
       {/* Optional Background Image */}
       <SectionBackground
         src={background.src}
         alt={backgroundAlt}
-        themeBg={MODULE_THEME.bg}
+        themeBg="bg-background"
         overlayClass={background.overlayClass}
         enabled={background.enabled}
       />
 
-      {/* Decorative Brand Accent (Ghost text watermark) */}
+      {/* Decorative Brand Accent (ghost text watermark) */}
       <AccentCharacter
         char={decorative.accentChar}
-        className="top-[10%] left-0 translate-x-[15%] opacity-10"
+        className="top-[10%] right-0 translate-x-[20%] opacity-10"
       />
 
       {/* Decorative circles */}
@@ -65,18 +67,24 @@ export function JuradoView() {
               <SectionHeader
                 label={label}
                 title={titulo}
-                highlights={tituloHighlight ? [tituloHighlight] : []}
-                subtitle={subtitulo}
+                highlights={tituloHighlights}
                 theme={MODULE_THEME}
                 variant={variant}
                 align={headerAlign}
-                animate={false}
-                id="jurado-heading"
+                animate={true}
+                id="marca-pais-heading"
               />
             }
           >
             <div className="flex flex-col gap-10 w-full">
-              <JuradoGroupList theme={MODULE_THEME} />
+              <SectionDescription
+                variant={variant}
+                animate
+                align={headerAlign}
+                maxWidth="max-w-none"
+              >
+                {descripcion}
+              </SectionDescription>
             </div>
           </SectionLayout>
         </motion.div>

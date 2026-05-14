@@ -12,6 +12,7 @@ export const FOOTER_CONFIG = {
     enabled: true,
     src: imgFondo,
     overlayClass: "opacity-95",
+    alt: "Fondo Footer",
   },
   brand: {
     useLogoComponent: false,

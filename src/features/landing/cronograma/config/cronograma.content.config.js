@@ -9,6 +9,7 @@ export const CRONOGRAMA_CONTENT = {
   tituloHighlight: "ruta",
   subtitulo:
     "Seis etapas que guiarán la construcción de la nueva identidad visual de Venezuela.",
+  backgroundAlt: "Fondo Cronograma",
 };
 
 /**

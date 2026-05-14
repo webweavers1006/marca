@@ -1,89 +1,100 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { CONCURSO_CONTENT } from "./config/concurso.content.config";
 import { CONCURSO_CONFIG } from "./config/concurso.config";
 import { BRAND_THEMES } from "@/features/shared/config/theme.config";
 import { sectionContainerVariants } from "@/features/shared/config/animations.config";
 import { useSectionObserver } from "@/features/shared/hooks/use-section-observer";
 
-import { ConcursoHeader } from "./components/ConcursoHeader";
 import { ConcursoPremio } from "./components/ConcursoPremio";
+import { SectionHeader } from "@/components/shared/SectionHeader";
+import { SectionDescription } from "@/components/shared/SectionDescription";
 import { AccentCharacter } from "@/components/shared/AccentCharacter";
+import { DecorativeCircles } from "@/components/shared/DecorativeCircles";
+import { SectionBackground } from "@/components/shared/SectionBackground";
+import { Container } from "@/components/shared/Container";
 
 const MODULE_THEME = BRAND_THEMES[1];
 
 /**
  * ConcursoView — "El Concurso" section.
- * Layout adheres to full-bleed editorial aesthetic, fully orchestrated 
- * here in the view without wrapper blocks.
+ * Dark variant, Teal theme. Custom editorial split layout:
+ * Premio card as visual anchor (left), editorial text (right).
  */
 export function ConcursoView() {
-  const { sectionId, label, titulo, texto, images } = CONCURSO_CONTENT;
+  const { sectionId, label, titulo, subtitulo, texto, backgroundAlt } = CONCURSO_CONTENT;
+  const { decorative, background, premioLogo, variant } = CONCURSO_CONFIG;
   const sectionRef = useSectionObserver("/#" + sectionId, { threshold: 0.3 });
-
-  // Orchestrate layout imagery from the config array
 
   return (
     <section
       id={sectionId}
       ref={sectionRef}
-      className={`${!CONCURSO_CONFIG.background.enabled ? MODULE_THEME.bg : "bg-background"} relative overflow-hidden`}
+      className={`${!background.enabled ? MODULE_THEME.bg : "bg-background"} relative overflow-hidden text-foreground-inverse`}
       aria-labelledby="concurso-heading"
     >
-      {/* Fondo de Imagen opcional */}
-      {CONCURSO_CONFIG.background.enabled && (
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <Image
-            src={CONCURSO_CONFIG.background.src}
-            alt="Fondo Concurso"
-            fill
-            className="object-cover object-center"
-            priority
-          />
-          {/* Overlay del color de la marca para mantener consistencia y legibilidad */}
-          <div className={`absolute inset-0 ${MODULE_THEME.bg} ${CONCURSO_CONFIG.background.overlayClass}`} />
-        </div>
-      )}
-
-      {/* Decorative Brand Accent (Ghost text watermark) */}
-      <AccentCharacter
-        char={CONCURSO_CONFIG.decorative.accentChar}
-        className="top-[10%] right-0 translate-x-[20%] opacity-15 "
+      {/* Background Image */}
+      <SectionBackground
+        src={background.src}
+        alt={backgroundAlt}
+        themeBg={MODULE_THEME.bg}
+        overlayClass={background.overlayClass}
+        enabled={background.enabled}
       />
 
-      {/* Decorative circles (ambient identity) at section level */}
-      {CONCURSO_CONFIG.decorative.circles.map((circle, idx) => (
-        <div key={idx} className={circle.className} aria-hidden="true" />
-      ))}
+      {/* Decorative Brand Accent */}
+      <AccentCharacter
+        char={decorative.accentChar}
+        className="top-[10%] right-0 translate-x-[20%] opacity-15"
+      />
 
-      <motion.div
-        variants={sectionContainerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        className="relative z-10"
-      >
-        {/* ── ROW 1: Header content (left) + Prize info (right) ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-foreground-inverse/10">
+      {/* Decorative circles */}
+      <DecorativeCircles circles={decorative.circles} />
 
-          <div className="relative p-10 md:p-14 lg:p-16 xl:p-20 min-h-[400px] lg:min-h-[460px] flex flex-col justify-between">
-            <ConcursoHeader
-              label={label}
-              titulo={titulo}
-              texto={texto}
-              theme={MODULE_THEME}
-            />
+      <Container>
+        <motion.div
+          variants={sectionContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          className="relative z-10 w-full"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-[45fr_55fr] gap-10 lg:gap-20 py-16 md:py-20 lg:py-24">
+
+            {/* LEFT: Impact Card — Premio as visual anchor (desktop left, mobile bottom) */}
+   
+              <ConcursoPremio
+                premio={CONCURSO_CONTENT.premio}
+                premioLogo={premioLogo}
+                theme={MODULE_THEME}
+              />
+
+
+            {/* RIGHT: Editorial — Header + Description (desktop right, mobile top) */}
+            <div className="flex flex-col justify-center gap-10 order-1 lg:order-2">
+              <SectionHeader
+                label={label}
+                title={titulo}
+                theme={MODULE_THEME}
+                variant={variant}
+                align="right"
+                animate={false}
+                id="concurso-heading"
+              />
+              <SectionDescription
+                variant={variant}
+                animate
+                align="left"
+                maxWidth="max-w-none"
+              >
+                {texto}
+              </SectionDescription>
+            </div>
+
           </div>
-
-          {/* Right panel: Prize Information */}
-          <ConcursoPremio premio={CONCURSO_CONTENT.premio} theme={MODULE_THEME} />
-        </div>
-
-        {/* ── ROW 2: 3-column image strip ── */}
-        {/*         <ConcursoImageStrip images={stripImages} theme={MODULE_THEME} /> */}
-      </motion.div>
+        </motion.div>
+      </Container>
     </section>
   );
 }

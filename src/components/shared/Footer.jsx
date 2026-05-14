@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FOOTER_CONFIG } from "@/features/shared/config/footer.config";
 import { BrandIcon } from "./BrandIcon";
+import { SectionBackground } from "./SectionBackground";
 import { cn } from "@/lib/utils";
 
 /**
@@ -18,19 +19,13 @@ export function Footer() {
       className="relative overflow-hidden w-full bg-secondary text-foreground-inverse pb-10"
     >
       {/* Background Image Layer */}
-      {FOOTER_CONFIG.background?.enabled && (
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <Image
-            src={FOOTER_CONFIG.background.src}
-            alt="Fondo Footer"
-            fill
-            className="object-cover object-center"
-            priority={false}
-          />
-          {/* Brand color overlay to blend the image into the UI */}
-          <div className={cn("absolute inset-0 bg-secondary", FOOTER_CONFIG.background.overlayClass)} />
-        </div>
-      )}
+      <SectionBackground
+        src={FOOTER_CONFIG.background.src}
+        alt={FOOTER_CONFIG.background.alt}
+        themeBg="bg-secondary"
+        overlayClass={FOOTER_CONFIG.background.overlayClass}
+        enabled={FOOTER_CONFIG.background.enabled}
+      />
 
       {/* Content Container */}
       <div className="relative z-10 max-w-7xl mx-auto pt-24 px-8 md:px-16 flex flex-col gap-24">

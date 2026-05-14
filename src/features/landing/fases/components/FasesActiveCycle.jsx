@@ -9,7 +9,7 @@ import { Heading } from "@/components/shared/Heading";
  * Vertical layout optimized for side-by-side grid panels.
  */
 export function FasesActiveCycle({ cycle, theme }) {
-  const { badgeLabel } = ACTIVE_CYCLE_CONFIG;
+  const { badgeLabel, phaseLabel, cycleLabel } = ACTIVE_CYCLE_CONFIG;
 
   if (!cycle) return null;
 
@@ -33,14 +33,14 @@ export function FasesActiveCycle({ cycle, theme }) {
           <div className="flex items-center gap-2 opacity-60">
             <Layers size={16} className={accentClass} />
             <span className={`text-[10px] tracking-[0.2em] uppercase font-bold ${accentClass}`}>
-              Fase de Selección
+              {phaseLabel}
             </span>
           </div>
         </div>
 
         {/* Huge Number */}
         <div className="flex items-baseline gap-4 border-b border-foreground-inverse/10 pb-4 w-full">
-          <span className={`text-xs tracking-[0.2em] uppercase font-bold text-foreground-inverse/60`}>Ciclo</span>
+          <span className="text-xs tracking-[0.2em] uppercase font-bold text-foreground-inverse/60">{cycleLabel}</span>
           <p className={`font-black text-5xl md:text-6xl tracking-tighter leading-none text-foreground-inverse select-none`}>
             {cycle.numero}
           </p>

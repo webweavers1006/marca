@@ -1,6 +1,6 @@
 import { HeroView } from "@/features/landing/hero/HeroView";
 import { ConcursoView } from "@/features/landing/concurso/ConcursoView";
-import { ImpactoView } from "@/features/landing/impacto/ImpactoView";
+import { CountryBrandView } from "@/features/landing/country-brand/CountryBrandView";
 import { FasesView } from "@/features/landing/fases/FasesView";
 import { JuradoView } from "@/features/landing/jurado/JuradoView";
 import { CronogramaView } from "@/features/landing/cronograma/CronogramaView";
@@ -13,11 +13,11 @@ export default function HomePage() {
   return (
     <>
       <HeroView />
+      <CountryBrandView />
       <ConcursoView />
       <CronogramaView />
       <FasesView />
       <JuradoView />
-      {/*<ImpactoView /> */}
     </>
   );
 }

@@ -1,19 +1,27 @@
 import imgFondo from "@/assets/images/fondos/salto_angel.png";
+import logoblanco from "@/assets/images/logos/logoblanco.png";
 
 /**
  * Concurso section behavior and structural configuration.
  */
 export const CONCURSO_CONFIG = {
   /**
+   * Visual mode: "dark" = colored bg + inverse text. "light" = cream bg + dark text.
+   */
+  variant: "dark",
+
+  /**
    * Background image configuration for the entire section.
-   * Works similarly to Hero or Fases.
    */
   background: {
-    enabled: true, // Cambiar a true para usar imagen de fondo en lugar de color sólido
+    enabled: true,
     src: imgFondo,
-    // La opacidad del overlay teal (secondary) sobre la imagen (ej. "opacity-90")
     overlayClass: "opacity-90",
   },
+  /**
+   * Premium logo asset displayed in the prize card.
+   */
+  premioLogo: logoblanco,
   /**
    * Decorative ambient elements (floating circles and characters)
    */
